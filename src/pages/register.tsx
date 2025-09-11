@@ -1,9 +1,12 @@
 import "./register.scss";
-import "bootstrap/dist/css/bootstrap.min.css";
+
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { createUserApi } from "../utils/api";
-// import { notifySuccess, notifyError } from "../utils/toast";
+
+// với Ant Design v5
 import { useNavigate } from "react-router-dom";
+import { notification } from "antd";
 
 interface FormData {
   username: string;
@@ -48,10 +51,23 @@ const RegisterPage = () => {
         let response = await createUserApi(username, email, password);
 
         if (response?.data?.result?.success === true) {
-          alert(response.data.result.message);
-          navigate("/login");
+          notification.success({
+            message: "Register Successfully",
+            description: response.data.result.message,
+            placement: "topRight",
+          });
+          //
+
+          setTimeout(() => {
+            navigate("/login");
+          }, 1500);
         } else {
-          alert(response.data.result.message);
+          notification.error({
+            message: "Register Failed",
+            description: response?.data?.result?.message,
+            placement: "topRight",
+          });
+          // alert("Register failed: " + response?.data?.result?.message);
         }
       } catch (e) {
         console.log(e);
@@ -141,9 +157,9 @@ const RegisterPage = () => {
 
             <p className="text-center mt-4">
               Already have an account?{" "}
-              <a href="/login" className="text-primary">
+              <Link to="/Login" className="text-dark  fw-bold">
                 Sign in
-              </a>
+              </Link>
             </p>
           </div>
         </div>
