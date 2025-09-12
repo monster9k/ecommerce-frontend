@@ -46,15 +46,12 @@ const LoginPage = () => {
       const { email, password } = formData;
       try {
         let response = await loginUserApi(email, password);
-
-        if (response?.data?.result?.success === true) {
-          localStorage.setItem(
-            "access_token",
-            response.data.result.access_token
-          );
+        console.log(response);
+        if (response?.data?.success === true) {
+          localStorage.setItem("access_token", response.data.access_token);
           notification.success({
             message: "Login Successfully",
-            description: response.data.result.message,
+            description: response.data.message,
             placement: "topRight",
           });
           //
@@ -65,7 +62,7 @@ const LoginPage = () => {
         } else {
           notification.error({
             message: "Login Failed",
-            description: response?.data?.result?.message,
+            description: response?.data?.message,
             placement: "topRight",
           });
           // alert("Register failed: " + response?.data?.result?.message);

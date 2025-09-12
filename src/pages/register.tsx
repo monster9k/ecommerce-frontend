@@ -50,10 +50,10 @@ const RegisterPage = () => {
       try {
         let response = await createUserApi(username, email, password);
 
-        if (response?.data?.result?.success === true) {
+        if (response?.data?.success === true) {
           notification.success({
             message: "Register Successfully",
-            description: response.data.result.message,
+            description: response.data.message,
             placement: "topRight",
           });
           //
@@ -64,7 +64,7 @@ const RegisterPage = () => {
         } else {
           notification.error({
             message: "Register Failed",
-            description: response?.data?.result?.message,
+            description: response?.data?.message,
             placement: "topRight",
           });
           // alert("Register failed: " + response?.data?.result?.message);
