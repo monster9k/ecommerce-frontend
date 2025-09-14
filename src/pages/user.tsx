@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Space, Table } from "antd";
+import { notification, Space, Table } from "antd";
 import type { TableProps } from "antd";
 import { getUserApi } from "../utils/api";
 interface DataType {
@@ -44,9 +44,13 @@ const UserPage: React.FC = () => {
     const fetchUser = async () => {
       try {
         const res = await getUserApi();
-        console.log("res >> ", res);
+        // console.log("check res:", res);
         if (res?.data) {
           setDataUser(res.data.users); // chỉnh theo đúng format API
+        } else {
+          notification.error({
+            message: "Unathorized",
+          });
         }
       } catch (err) {
         console.error("Error fetching users:", err);

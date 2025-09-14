@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 
 import { loginUserApi } from "../utils/api";
 import { Link } from "react-router-dom";
@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 // với Ant Design v5
 import { useNavigate } from "react-router-dom";
 import { notification } from "antd";
+import { AuthContext } from "../components/context/auth.context";
 
 interface FormData {
   email: string;
@@ -14,6 +15,11 @@ interface FormData {
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error("useContext must be used within AuthWrapper");
+  }
+  const { auth, setAuth } = context;
   const [formData, setFormData] = useState<FormData>({
     email: "",
     password: "",
@@ -46,6 +52,7 @@ const LoginPage = () => {
       const { email, password } = formData;
       try {
         let response = await loginUserApi(email, password);
+
         console.log(response);
         if (response?.data?.success === true) {
           localStorage.setItem("access_token", response.data.access_token);
@@ -55,7 +62,14 @@ const LoginPage = () => {
             placement: "topRight",
           });
           //
-
+          setAuth({
+            isAuthenticated: true,
+            user: {
+              username: response?.data?.user?.username ?? "",
+              email: response?.data?.user?.email ?? "",
+              role: response?.data?.user?.role ?? "",
+            },
+          });
           setTimeout(() => {
             navigate("/");
           }, 1500);

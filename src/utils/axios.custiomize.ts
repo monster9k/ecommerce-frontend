@@ -5,7 +5,7 @@ const instance = axios.create({
 });
 
 // Alter defaults after instance has been created
-instance.defaults.headers.common["Authorization"] = "khoa_token";
+// instance.defaults.headers.common["Authorization"] = "khoa_token";
 
 // Add a request interceptor
 instance.interceptors.request.use(
@@ -32,6 +32,10 @@ instance.interceptors.response.use(
   function (error) {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
+
+    if (error?.response?.data) {
+      return error.response.data;
+    }
     return Promise.reject(error);
   }
 );

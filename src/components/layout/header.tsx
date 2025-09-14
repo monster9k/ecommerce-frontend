@@ -1,51 +1,78 @@
-import React, { useState } from "react";
-import {
-  AppstoreOutlined,
-  MailOutlined,
-  SettingOutlined,
-} from "@ant-design/icons";
-import { Link } from "react-router-dom";
+import React, { useContext, useEffect, useMemo } from "react";
+import { MailOutlined, SettingOutlined } from "@ant-design/icons";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import type { MenuProps } from "antd";
 import { Menu } from "antd";
+import { AuthContext } from "../context/auth.context";
 
 const Header: React.FC = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const context = useContext(AuthContext);
+
+  if (!context) {
+    throw new Error("useContext must be used within AuthWrapper");
+  }
+
+  const { auth, setAuth } = context;
+
+  console.log("auth", auth);
+  // Khi auth thay đổi (ví dụ logout), redirect về home
+  useEffect(() => {
+    if (!auth.isAuthenticated && location.pathname !== "/") {
+      navigate("/");
+    }
+  }, [auth.isAuthenticated, navigate, location.pathname]);
+
   type MenuItem = Required<MenuProps>["items"][number];
 
-  const items: MenuItem[] = [
-    {
-      label: <Link to={"/"}>HomePage</Link>,
-      key: "mail",
-      icon: <MailOutlined />,
-    },
-    {
-      label: <Link to={"/user"}>Users</Link>,
-      key: "user",
-      icon: <MailOutlined />,
-    },
-    {
-      label: "Wellcome khoa",
-      key: "SubMenu",
-      icon: <SettingOutlined />,
-      children: [
-        { label: "Đăng nhập", key: "login" },
-        { label: "Đăng xuất", key: "logout" },
-      ],
-    },
-  ];
-  const [current, setCurrent] = useState("mail");
-
-  const onClick: MenuProps["onClick"] = (e) => {
-    console.log("click ", e);
-    setCurrent(e.key);
-  };
+  // Tạo menu items dựa vào auth
+  const items: MenuItem[] = useMemo(() => {
+    return [
+      {
+        label: <Link to="/">HomePage</Link>,
+        key: "/",
+        icon: <MailOutlined />,
+      },
+      ...(auth.isAuthenticated
+        ? [
+            {
+              label: <Link to="/user">Users</Link>,
+              key: "/user",
+              icon: <MailOutlined />,
+            },
+          ]
+        : []),
+      {
+        label: `Welcome ${auth.user.username || "Guest"}`,
+        key: "SubMenu",
+        icon: <SettingOutlined />,
+        children: auth.isAuthenticated
+          ? [
+              {
+                key: "/logout",
+                label: "Đăng xuất",
+                onClick: () => {
+                  localStorage.removeItem("access_token");
+                  setAuth({
+                    isAuthenticated: false,
+                    user: { username: "", email: "", role: "" },
+                  });
+                },
+              },
+            ]
+          : [
+              {
+                key: "/login",
+                label: <Link to="/login">Đăng nhập</Link>,
+              },
+            ],
+      },
+    ];
+  }, [auth, setAuth]);
 
   return (
-    <Menu
-      onClick={onClick}
-      selectedKeys={[current]}
-      mode="horizontal"
-      items={items}
-    />
+    <Menu selectedKeys={[location.pathname]} mode="horizontal" items={items} />
   );
 };
 
