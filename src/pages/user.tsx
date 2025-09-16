@@ -11,7 +11,7 @@ import {
 } from "antd";
 import type { TableProps } from "antd";
 import EditModalUser from "./modalUserEdit";
-import { getUserApi, editUserApi } from "../utils/api";
+import { getUserApi, editUserApi, deleteUserApi } from "../utils/api";
 interface DataType {
   id: number;
   username: string;
@@ -67,6 +67,18 @@ const UserPage: React.FC = () => {
     }
   };
 
+  const handleDeleteUser = async (id: number) => {
+    try {
+      await deleteUserApi(id);
+      console.log(id);
+      notification.success({ message: "Delete success!" });
+      fetchUser(); // reload list
+    } catch (e) {
+      notification.error({ message: "Delete failed!" });
+      console.error(e);
+    }
+  };
+
   useEffect(() => {
     fetchUser();
   }, []);
@@ -95,7 +107,15 @@ const UserPage: React.FC = () => {
           <Button type="primary" onClick={() => handleEditUser(record)}>
             Edit
           </Button>
-          <a>Delete</a>
+          <Popconfirm
+            title="Delete the task"
+            description="Are you sure to delete this task?"
+            okText="Yes"
+            cancelText="No"
+            onConfirm={() => handleDeleteUser(record.id)}
+          >
+            <Button danger>Delete</Button>
+          </Popconfirm>
         </Space>
       ),
     },

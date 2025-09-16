@@ -34,4 +34,9 @@ const editUserApi = (id: number, username: string, email: string) => {
   return axios.put(URL_API, data);
 };
 
-export { createUserApi, loginUserApi, getUserApi, editUserApi };
+const deleteUserApi = (id: Number) => {
+  const URL_API = `/api/delete-user/${id}`;
+  return axios.delete(URL_API);
+};
+
+export { createUserApi, loginUserApi, getUserApi, editUserApi, deleteUserApi };
