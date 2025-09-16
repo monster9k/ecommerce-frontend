@@ -34,7 +34,7 @@ const Header: React.FC = () => {
         key: "/",
         icon: <MailOutlined />,
       },
-      ...(auth.isAuthenticated
+      ...(auth.isAuthenticated && auth.user.role === "admin"
         ? [
             {
               label: <Link to="/user">Users</Link>,
@@ -65,7 +65,7 @@ const Header: React.FC = () => {
               {
                 key: "/login",
                 label: <Link to="/login">Đăng nhập</Link>,
-              },
+              },                    
             ],
       },
     ];

@@ -25,4 +25,13 @@ const getUserApi = () => {
   return axios.get(URL_API);
 };
 
-export { createUserApi, loginUserApi, getUserApi };
+const editUserApi = (id: number, username: string, email: string) => {
+  const URL_API = `/api/edit-user/${id}`;
+  const data = {
+    username,
+    email,
+  };
+  return axios.put(URL_API, data);
+};
+
+export { createUserApi, loginUserApi, getUserApi, editUserApi };

@@ -14,6 +14,9 @@ interface Auth {
 interface AuthContextType {
   auth: Auth;
   setAuth: React.Dispatch<React.SetStateAction<Auth>>; //setAuth là một hàm, mà tham số nó nhận vào có kiểu SetStateAction<Auth>.
+
+  appLoading: boolean;
+  setAppLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(
@@ -34,11 +37,15 @@ export const AuthWrapper: React.FC<AuthWrapperProps> = ({ children }) => {
     },
   });
 
+  const [appLoading, setAppLoading] = useState<boolean>(true);
+
   return (
     <AuthContext.Provider
       value={{
         auth,
         setAuth,
+        appLoading,
+        setAppLoading,
       }}
     >
       {children}
