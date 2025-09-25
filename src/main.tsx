@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-
+import "./index.css";
 import RegisterPage from "./pages/register";
 import HomePage from "./pages/home";
 import UserPage from "./pages/user";
@@ -15,6 +15,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "react-toastify/dist/ReactToastify.css";
 import "./styles/global.scss";
 import { AuthWrapper } from "./components/context/auth.context";
+import DashBoardPage from "./pages/admin/dashboard";
 
 const router = createBrowserRouter([
   {
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
         element: <UserPage />,
       },
     ],
+  },
+  {
+    path: "dashboard",
+    element: <DashBoardPage />,
   },
   {
     path: "register",
