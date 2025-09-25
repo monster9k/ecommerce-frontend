@@ -71,7 +71,13 @@ const LoginPage = () => {
             },
           });
           setTimeout(() => {
-            navigate("/");
+            if (response?.data?.user?.role === "admin") {
+              navigate("/admin");
+              return;
+            } else {
+              navigate("/");
+              return;
+            }
           }, 1500);
         } else {
           notification.error({

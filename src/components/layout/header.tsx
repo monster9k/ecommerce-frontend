@@ -34,15 +34,7 @@ const Header: React.FC = () => {
         key: "/",
         icon: <MailOutlined />,
       },
-      ...(auth.isAuthenticated && auth.user.role === "admin"
-        ? [
-            {
-              label: <Link to="/user">Users</Link>,
-              key: "/user",
-              icon: <MailOutlined />,
-            },
-          ]
-        : []),
+
       {
         label: `Welcome ${auth.user.username || "Guest"}`,
         key: "SubMenu",
@@ -65,7 +57,7 @@ const Header: React.FC = () => {
               {
                 key: "/login",
                 label: <Link to="/login">Đăng nhập</Link>,
-              },                    
+              },
             ],
       },
     ];
