@@ -1,12 +1,11 @@
-import axios from "./utils/axios.custiomize";
+import axios from "../../utils/axios.custiomize";
 import { useContext, useEffect } from "react";
 import { Outlet } from "react-router-dom"; // cai lo de thoat nuoc
 
-import Header from "./components/layout/header";
-import { AuthContext } from "./components/context/auth.context";
-import { Spin } from "antd";
+import Header from "../../components/layout/header";
+import { AuthContext } from "../../components/context/auth.context";
 
-function App() {
+function UserLayout() {
   const context = useContext(AuthContext);
   if (!context) {
     throw new Error("useContext must be used within AuthWrapper");
@@ -49,4 +48,4 @@ function App() {
   );
 }
 
-export default App;
+export default UserLayout;

@@ -9,19 +9,19 @@ import HomePage from "./pages/home";
 import UserPage from "./pages/user";
 import LoginPage from "./pages/login";
 import TestAntdEffects from "./pages/test";
-import App from "./UserAppLayout";
+import UserLayout from "./pages/user/UserAppLayout";
 import "antd/dist/reset.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-toastify/dist/ReactToastify.css";
-import "./styles/global.scss";
+
 import { AuthWrapper } from "./components/context/auth.context";
-import DashBoardPage from "./pages/admin/dashboard";
-import AdminLayout from "./AdminAppLayout";
+
+import AdminLayout from "./pages/admin/AdminAppLayout";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: <UserLayout />,
     children: [
       {
         index: true, // ho tro hien thi thang con o trang /
@@ -37,9 +37,9 @@ const router = createBrowserRouter([
     path: "/admin",
     element: <AdminLayout />,
     children: [
-      {
-        element: <DashBoardPage />,
-      },
+      // {
+      //   element: ,
+      // },
     ],
   },
   {

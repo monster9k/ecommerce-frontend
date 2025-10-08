@@ -19,7 +19,7 @@ const LoginPage = () => {
   if (!context) {
     throw new Error("useContext must be used within AuthWrapper");
   }
-  const { auth, setAuth } = context;
+  const { setAuth } = context;
   const [formData, setFormData] = useState<FormData>({
     email: "",
     password: "",
