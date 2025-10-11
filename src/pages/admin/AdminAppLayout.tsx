@@ -1,6 +1,6 @@
 import axios from "../../utils/axios.custiomize";
 import { useContext, useEffect, useState } from "react";
-import { Navigate } from "react-router-dom"; // cai lo de thoat nuoc
+import { Navigate, Outlet } from "react-router-dom"; // cai lo de thoat nuoc
 
 import { AuthContext } from "../../components/context/auth.context";
 
@@ -16,7 +16,7 @@ function AdminLayout() {
   }
   const { auth, setAuth, appLoading, setAppLoading } = context;
   const [sideBarCollapsed, setSideBarCollapsed] = useState(false);
-  const [currentPage, setCurrentPage] = useState("dashboard");
+
   useEffect(() => {
     setAppLoading(true);
     const fetchAccount = async () => {
@@ -65,8 +65,6 @@ function AdminLayout() {
           <SidebarPage
             collapsed={sideBarCollapsed}
             onToggle={() => setSideBarCollapsed(!sideBarCollapsed)}
-            currentPage={currentPage}
-            onPageChange={setCurrentPage}
           />
           <div className="flex-1 flex flex-col overflow-hidden">
             <AdminHeader
@@ -75,7 +73,8 @@ function AdminLayout() {
             />
             <main className="flex-1 overflow-y-auto bg-transparent">
               <div className="p-6 space-y-6">
-                {currentPage === "dashboard" && <Dashboard />}
+                {/* {currentPage === "dashboard" && <Dashboard />} */}
+                <Outlet />
               </div>
             </main>
           </div>

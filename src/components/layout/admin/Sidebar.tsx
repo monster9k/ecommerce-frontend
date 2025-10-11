@@ -14,13 +14,14 @@ import {
 } from "lucide-react";
 import avatar from "../../../assets/img/avatar.jpg";
 import { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const menuItems = [
   {
-    id: "dashboard",
+    id: "",
     icon: LayoutDashboard,
     lable: "Dashboard",
-
+    path: "/admin/",
     badge: "New",
   },
   {
@@ -28,20 +29,21 @@ const menuItems = [
     icon: BarChart3,
     lable: "Analytics",
     submenu: [
-      { id: "overview", lable: "Overview" },
-      { id: "reports", lable: "Reports" },
-      { id: "insights", lable: "Insights" },
+      { id: "overview", path: "/admin/overview", lable: "Overview" },
+      { id: "reports", path: "/admin/reports", lable: "Reports" },
+      { id: "insights", path: "/admin/insights", lable: "Insights" },
     ],
   },
   {
     id: "users",
     icon: Users,
     lable: "Users",
+
     count: "2.4k",
     submenu: [
-      { id: "all-users", lable: "All users" },
-      { id: "roles", lable: "Roles & Permission" },
-      { id: "activity", lable: "User Activity" },
+      { id: "all-users", path: "/admin/all-users", lable: "All users" },
+      { id: "roles", path: "/admin/roles", lable: "Roles & Permission" },
+      { id: "activity", path: "/admin/activity", lable: "User Activity" },
     ],
   },
   {
@@ -49,14 +51,15 @@ const menuItems = [
     icon: ShoppingCartIcon,
     lable: "E-commerce",
     submenu: [
-      { id: "products", lable: "Products" },
-      { id: "orders", lable: "Oders" },
-      { id: "customer", lable: "Customers" },
+      { id: "products", path: "/admin/products", lable: "Products" },
+      { id: "orders", path: "/admin/orders", lable: "Oders" },
+      { id: "customer", path: "/admin/customer", lable: "Customers" },
     ],
   },
   {
     id: "inventory",
     icon: Package,
+    path: "/admin/inventory",
     lable: "Inventory",
     count: "847",
   },
@@ -90,16 +93,11 @@ const menuItems = [
 
 const SidebarPage = ({
   collapsed,
-
-  currentPage,
-  onPageChange,
 }: {
   collapsed: boolean;
   onToggle: () => void;
-  currentPage: string;
-  onPageChange: (page: string) => void;
 }) => {
-  const [expandedItems, setExpandedItems] = useState(new Set(["analytics"]));
+  const [expandedItems, setExpandedItems] = useState(new Set([""]));
 
   const toggleExpanded = (itemid: string) => {
     const newExpanded = new Set(expandedItems);
@@ -111,6 +109,12 @@ const SidebarPage = ({
     }
     setExpandedItems(newExpanded);
   };
+  const closeAllExpanded = () => {
+    setExpandedItems(new Set()); // đóng tất cả
+  };
+
+  const navigate = useNavigate();
+  const location = useLocation();
   return (
     <div
       className={`${
@@ -141,13 +145,14 @@ const SidebarPage = ({
       {/* Navigation */}
       <nav className="flex-1 p-3 space-y-2 overflow-y-auto">
         {menuItems.map((item) => {
+          const isActive = location.pathname === item.path;
           return (
             <div key={item.id}>
               <button
                 className={`w-full flex items-center ${
                   collapsed ? "justify-center" : "justify-between"
                 }  p-2 !rounded-xl transition-all duration-200 ${
-                  currentPage === item.id
+                  isActive
                     ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg shadow-blue-500/25"
                     : "text-slate-600 dark:!text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/50"
                 }`}
@@ -155,7 +160,8 @@ const SidebarPage = ({
                   if (item.submenu) {
                     toggleExpanded(item.id);
                   } else {
-                    onPageChange(item.id);
+                    closeAllExpanded();
+                    navigate(item.path || "/admin/");
                   }
                 }}
               >
@@ -190,8 +196,19 @@ const SidebarPage = ({
               {!collapsed && item.submenu && expandedItems.has(item.id) && (
                 <div className="ml-8 mt-2 space-y-1">
                   {item.submenu.map((subitem) => {
+                    const isActive = location.pathname === subitem.path;
                     return (
-                      <button className="w-full text-left p-2 text-sm text-slate-600 dark:!text-slate-300 hover:text-slate-800 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/50 rounded-lg transition-all">
+                      <button
+                        className={`w-full text-left p-2 text-sm text-slate-600 dark:!text-slate-300 hover:text-slate-800 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/50 !rounded-lg transition-all ${
+                          isActive
+                            ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg shadow-blue-500/25"
+                            : "text-slate-600 dark:!text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/50"
+                        }`}
+                        onClick={() => {
+                          navigate(subitem.path || "/admin/");
+                        }}
+                        key={subitem.id}
+                      >
                         {subitem.lable}
                       </button>
                     );

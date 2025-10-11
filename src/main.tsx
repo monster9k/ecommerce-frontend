@@ -10,6 +10,7 @@ import UserPage from "./pages/user";
 import LoginPage from "./pages/login";
 import TestAntdEffects from "./pages/test";
 import UserLayout from "./pages/user/UserAppLayout";
+import Dashboard from "./components/Dashboard/DashBoard";
 import "antd/dist/reset.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-toastify/dist/ReactToastify.css";
@@ -17,6 +18,8 @@ import "react-toastify/dist/ReactToastify.css";
 import { AuthWrapper } from "./components/context/auth.context";
 
 import AdminLayout from "./pages/admin/AdminAppLayout";
+import UserListPage from "./pages/admin/Users/UserListPage";
+import InventoryPage from "./pages/admin/InventoryPage";
 
 const router = createBrowserRouter([
   {
@@ -37,9 +40,9 @@ const router = createBrowserRouter([
     path: "/admin",
     element: <AdminLayout />,
     children: [
-      // {
-      //   element: ,
-      // },
+      { index: true, element: <Dashboard /> },
+      { path: "all-users", element: <UserListPage /> },
+      { path: "inventory", element: <InventoryPage /> },
     ],
   },
   {
