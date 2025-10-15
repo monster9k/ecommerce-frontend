@@ -1,7 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Space, Button, Table } from "antd";
 import type { TableProps } from "antd";
+import ModalUserEdit from "./ModalUserEdit";
 interface DataType {
   id: number;
   username: string;
@@ -13,7 +14,8 @@ import { getUserApi, editUserApi, deleteUserApi } from "../../../utils/api";
 import { File } from "lucide-react";
 
 const UserListPage: React.FC = () => {
-  const [dataUser, setDataUser] = React.useState<DataType[]>([]);
+  const [dataUser, setDataUser] = useState<DataType[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const fetchUser = async () => {
     try {
       const res = await getUserApi();
@@ -28,6 +30,11 @@ const UserListPage: React.FC = () => {
       console.error("Error fetching users:", err);
     }
   };
+
+  const handleEditUSer = (user: DataType) => {
+    setIsModalOpen(true);
+  };
+
   useEffect(() => {
     fetchUser();
   }, []);
@@ -52,7 +59,9 @@ const UserListPage: React.FC = () => {
       key: "action",
       render: (_, record) => (
         <Space size="middle">
-          <Button type="primary">Edit</Button>
+          <Button type="primary" onClick={() => handleEditUSer(record)}>
+            Edit
+          </Button>
 
           <Button danger>Delete</Button>
         </Space>
@@ -77,6 +86,8 @@ const UserListPage: React.FC = () => {
       <div className="antd-table-dark">
         <Table<DataType> columns={columns} dataSource={dataUser} rowKey="id" />
       </div>
+      {/* Modal Edit User */}
+      <ModalUserEdit open={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </div>
   );
 };

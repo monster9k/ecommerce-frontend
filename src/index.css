@@ -30,3 +30,35 @@
     dark:[&_.ant-select-arrow]:!text-gray-200;
   }
 }
+
+/* =====================
+   LIGHT THEME MODAL
+   ===================== */
+.light-modal .ant-modal-content {
+  @apply bg-white text-black;
+}
+.light-modal .ant-modal-header {
+  @apply text-black;
+}
+.light-modal .ant-modal-close-x {
+  @apply text-black;
+}
+
+/* =====================
+   DARK THEME MODAL
+   ===================== */
+.dark-modal .ant-modal-content {
+  @apply bg-slate-800 text-slate-100;
+}
+.dark-modal .ant-modal-header {
+  @apply text-slate-100 bg-slate-800;
+}
+.dark-modal .ant-modal-title {
+  @apply text-slate-100;
+}
+.dark-modal .ant-modal-close-x {
+  @apply text-slate-100;
+}
+.dark-modal .ant-modal-footer {
+  @apply border-slate-700;
+}

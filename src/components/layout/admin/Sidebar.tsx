@@ -132,7 +132,7 @@ const SidebarPage = ({
           {!collapsed && (
             <div>
               <h1 className="text-xl font-bold text-slate-800 dark:!text-white">
-                Nexus
+                KCHi
               </h1>
               <p className="text-xs text-slate-500 dark:text-slate-400">
                 Admin panel

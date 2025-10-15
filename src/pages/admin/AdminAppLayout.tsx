@@ -6,7 +6,7 @@ import { AuthContext } from "../../components/context/auth.context";
 
 import SidebarPage from "../../components/layout/admin/Sidebar";
 import AdminHeader from "../../components/layout/admin/adminHeader";
-import Dashboard from "../../components/Dashboard/DashBoard";
+
 import { ThemeProvider } from "../../components/context/admin.theme.context";
 
 function AdminLayout() {
