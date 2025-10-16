@@ -12,7 +12,7 @@ interface DataType {
 interface EditModalUserProps {
   open: boolean;
   onClose: () => void;
-  user?: DataType;
+  user?: DataType | null;
   onSave?: (updatedUser: DataType) => void;
 }
 
@@ -26,7 +26,7 @@ const ModalUserEdit: React.FC<EditModalUserProps> = ({
 
   const [username, setUsername] = useState(user?.username || "");
   const [email, setEmail] = useState(user?.email || "");
-  const [role, setRole] = useState(user?.role || "User");
+  const [role] = useState(user?.role || "User");
   const [errors, setErrors] = useState<{ username?: string; email?: string }>(
     {}
   );
@@ -35,7 +35,6 @@ const ModalUserEdit: React.FC<EditModalUserProps> = ({
     if (user) {
       setUsername(user.username);
       setEmail(user.email);
-      setRole(user.role);
     }
   }, [user]);
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { Space, Button, Table } from "antd";
+import { Space, Button, Table, notification } from "antd";
 import type { TableProps } from "antd";
 import ModalUserEdit from "./ModalUserEdit";
 interface DataType {
@@ -16,6 +16,7 @@ import { File } from "lucide-react";
 const UserListPage: React.FC = () => {
   const [dataUser, setDataUser] = useState<DataType[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<DataType | null>(null);
   const fetchUser = async () => {
     try {
       const res = await getUserApi();
@@ -32,7 +33,36 @@ const UserListPage: React.FC = () => {
   };
 
   const handleEditUSer = (user: DataType) => {
+    setSelectedUser(user);
     setIsModalOpen(true);
+  };
+
+  const handleSubmitEdit = async (values: DataType) => {
+    if (!selectedUser) return;
+    try {
+      const { username, email } = values;
+      await editUserApi(selectedUser.id, username, email);
+      notification.success({ message: "Update success!" });
+      setDataUser((prev) => {
+        return prev.map((u) =>
+          u.id === selectedUser.id
+            ? { ...u, username: values.username, email: values.email }
+            : u
+        );
+      });
+    } catch (err) {
+      console.error("Error edit users:", err);
+    }
+  };
+
+  const handleDeleteUser = async (userId: number) => {
+    try {
+      await deleteUserApi(userId);
+      notification.success({ message: "Delete success!" });
+      fetchUser(); // reload list
+    } catch (err) {
+      console.error("Error delete users:", err);
+    }
   };
 
   useEffect(() => {
@@ -63,7 +93,9 @@ const UserListPage: React.FC = () => {
             Edit
           </Button>
 
-          <Button danger>Delete</Button>
+          <Button danger onClick={() => handleDeleteUser(record.id)}>
+            Delete
+          </Button>
         </Space>
       ),
     },
@@ -87,7 +119,12 @@ const UserListPage: React.FC = () => {
         <Table<DataType> columns={columns} dataSource={dataUser} rowKey="id" />
       </div>
       {/* Modal Edit User */}
-      <ModalUserEdit open={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      <ModalUserEdit
+        open={isModalOpen}
+        user={selectedUser}
+        onClose={() => setIsModalOpen(false)}
+        onSave={handleSubmitEdit}
+      />
     </div>
   );
 };
