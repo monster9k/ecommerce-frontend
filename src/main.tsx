@@ -20,6 +20,7 @@ import { AuthWrapper } from "./components/context/auth.context";
 import AdminLayout from "./pages/admin/AdminAppLayout";
 import UserListPage from "./pages/admin/Users/UserListPage";
 import InventoryPage from "./pages/admin/InventoryPage";
+import ProductListPage from "./pages/admin/Products/ProuctListPage";
 
 const router = createBrowserRouter([
   {
@@ -43,6 +44,7 @@ const router = createBrowserRouter([
       { index: true, element: <Dashboard /> },
       { path: "all-users", element: <UserListPage /> },
       { path: "inventory", element: <InventoryPage /> },
+      { path: "products", element: <ProductListPage /> },
     ],
   },
   {
