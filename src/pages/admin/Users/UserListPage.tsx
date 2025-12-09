@@ -72,21 +72,24 @@ const UserListPage: React.FC = () => {
     {
       title: "Name",
       dataIndex: "username",
-
+      align: "center",
       render: (text) => <a>{text}</a>,
     },
     {
       title: "Email",
       dataIndex: "email",
+      align: "center",
     },
     {
       title: "Role",
       dataIndex: "role",
+      align: "center",
     },
 
     {
       title: "Action",
       key: "action",
+      align: "center",
       render: (_, record) => (
         <Space size="middle">
           <Button type="primary" onClick={() => handleEditUSer(record)}>
@@ -115,7 +118,7 @@ const UserListPage: React.FC = () => {
         </button>
       </div>
 
-      <div className="antd-table-dark">
+      <div>
         <Table<DataType> columns={columns} dataSource={dataUser} rowKey="id" />
       </div>
       {/* Modal Edit User */}

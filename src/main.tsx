@@ -1,5 +1,3 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
@@ -14,13 +12,14 @@ import Dashboard from "./components/Dashboard/DashBoard";
 import "antd/dist/reset.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-toastify/dist/ReactToastify.css";
-
+import { App as AntdApp } from "antd";
 import { AuthWrapper } from "./components/context/auth.context";
 
 import AdminLayout from "./pages/admin/AdminAppLayout";
 import UserListPage from "./pages/admin/Users/UserListPage";
 import InventoryPage from "./pages/admin/InventoryPage";
-import ProductListPage from "./pages/admin/Products/ProuctListPage";
+import ProductListPage from "./pages/admin/Products/ProductListPage";
+import OrderListPage from "./pages/admin/Orders/OrderListPage";
 
 const router = createBrowserRouter([
   {
@@ -45,6 +44,7 @@ const router = createBrowserRouter([
       { path: "all-users", element: <UserListPage /> },
       { path: "inventory", element: <InventoryPage /> },
       { path: "products", element: <ProductListPage /> },
+      { path: "orders", element: <OrderListPage /> },
     ],
   },
   {
@@ -63,8 +63,10 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <AuthWrapper>
-      <RouterProvider router={router} />
-    </AuthWrapper>
+    <AntdApp>
+      <AuthWrapper>
+        <RouterProvider router={router} />
+      </AuthWrapper>
+    </AntdApp>
   </StrictMode>
 );

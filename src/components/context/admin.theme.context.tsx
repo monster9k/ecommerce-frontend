@@ -1,3 +1,5 @@
+import { ConfigProvider, theme as antdTheme } from "antd";
+
 import { createContext, useContext, useEffect, useState } from "react";
 
 interface ThemeContextType {
@@ -28,7 +30,12 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   const [theme, setTheme] = useState<"light" | "dark">(getInitialTheme());
 
   useEffect(() => {
-    document.documentElement.className = theme;
+    const root = document.documentElement;
+    if (theme === "dark") {
+      root.classList.add("dark");
+    } else {
+      root.classList.remove("dark");
+    }
     localStorage.setItem("theme", theme);
   }, [theme]);
 
@@ -38,7 +45,21 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
-      {children}
+      <ConfigProvider
+        theme={{
+          algorithm:
+            theme === "dark"
+              ? antdTheme.darkAlgorithm
+              : antdTheme.defaultAlgorithm,
+          // optional: chỉnh thêm token cho đồng bộ với Tailwind
+          token: {
+            colorBgBase: theme === "dark" ? "#020617" : "#ffffff", // bg-slate-950 / white
+            colorText: theme === "dark" ? "#e5e7eb" : "#0f172a", // text-slate-200 / slate-900
+          },
+        }}
+      >
+        {children}
+      </ConfigProvider>
     </ThemeContext.Provider>
   );
 };
