@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Table, Checkbox, Button } from "antd";
+import { Table, Button, Popconfirm } from "antd";
+import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
-import { getProductDBApi } from "../../../utils/productApi";
+import { getProductDBApi, deleteProductDBApi } from "../../../utils/productApi";
 
 import CreateProductModal from "./CreateProductModal";
 import EditProductModal from "./EditProductModal";
@@ -18,7 +19,6 @@ export interface ProductType {
   imageUrl?: string;
 }
 const ProductListPage: React.FC = () => {
-  const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const [dataProduct, setDataProduct] = useState<ProductType[]>([]);
   const [open, setOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -40,12 +40,30 @@ const ProductListPage: React.FC = () => {
     fectchProduct();
   }, []);
 
-  const handleSelect = (id: number, checked: boolean) => {
-    setSelectedIds((prev) =>
-      checked ? [...prev, id] : prev.filter((i) => i !== id)
+  const handleProductCreated = (newProducts: ProductType[]) => {
+    setDataProduct((prev) => [...prev, ...newProducts]);
+
+    // Hoặc nếu muốn sync chính xác với DB:
+    // fectchProduct();
+  };
+
+  const handleProductEdited = (updated: ProductType) => {
+    setDataProduct((prev) =>
+      prev.map((item) => (item.id === updated.id ? updated : item))
     );
   };
 
+  const handleProductDeleted = async (deletedId: number) => {
+    try {
+      await deleteProductDBApi(deletedId);
+      // Cập nhật lại state: remove tất cả item có cùng productId
+      setDataProduct((prev) =>
+        prev.filter((item) => item.productId !== deletedId)
+      );
+    } catch (e) {
+      console.log(e);
+    }
+  };
   const columns: ColumnsType<ProductType> = [
     {
       title: "Item",
@@ -55,12 +73,7 @@ const ProductListPage: React.FC = () => {
       width: 300,
       render: (text, record) => (
         <div className="flex items-center space-x-3">
-          <div className="mr-2">
-            <Checkbox
-              checked={selectedIds.includes(record.id)}
-              onChange={(e) => handleSelect(record.id, e.target.checked)}
-            />
-          </div>
+          <div className="mr-2"></div>
 
           <img
             src={record.imageUrl}
@@ -107,31 +120,36 @@ const ProductListPage: React.FC = () => {
       key: "actions",
       align: "center",
       render: (_, record) => (
-        <Button
-          size="small"
-          onClick={() => {
-            setEditingRecord(record);
-            setIsEditOpen(true);
-          }}
-        >
-          Edit
-        </Button>
+        <div className="flex gap-2 justify-center">
+          {" "}
+          <Button
+            type="primary"
+            size="small"
+            icon={<EditOutlined />}
+            onClick={() => {
+              setEditingRecord(record);
+              setIsEditOpen(true);
+            }}
+          >
+            Edit
+          </Button>
+          <Popconfirm
+            title="Delete the product"
+            description="Are you sure to delete this product?"
+            okText="Yes"
+            cancelText="No"
+            okType="danger"
+            onConfirm={() => handleProductDeleted(record.productId)}
+          >
+            <Button size="small" danger icon={<DeleteOutlined />}>
+              Delete
+            </Button>
+          </Popconfirm>
+        </div>
       ),
     },
   ];
 
-  const handleProductCreated = (newProducts: ProductType[]) => {
-    setDataProduct((prev) => [...prev, ...newProducts]);
-
-    // Hoặc nếu muốn sync chính xác với DB:
-    // fectchProduct();
-  };
-
-  const handleProductEdited = (updated: ProductType) => {
-    setDataProduct((prev) =>
-      prev.map((item) => (item.id === updated.id ? updated : item))
-    );
-  };
   return (
     <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl rounded-xl border border-slate-200/50 dark:border-slate-700/50 p-6">
       <div className="p-6 border-b mb-3 border-slate-200/50 dark:border-slate-700/50 flex items-center justify-between">

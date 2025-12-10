@@ -43,3 +43,7 @@ export const editProductDBApi = (id: number, values: any, file?: File) => {
     headers: { "Content-Type": "multipart/form-data" },
   });
 };
+
+export const deleteProductDBApi = (id: number) => {
+  return axios.delete(`/api/productDB/${id}`);
+};

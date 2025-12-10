@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Space, Button, Table, notification } from "antd";
 import type { TableProps } from "antd";
 import ModalUserEdit from "./ModalUserEdit";
+import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 interface DataType {
   id: number;
   username: string;
@@ -92,11 +93,21 @@ const UserListPage: React.FC = () => {
       align: "center",
       render: (_, record) => (
         <Space size="middle">
-          <Button type="primary" onClick={() => handleEditUSer(record)}>
+          <Button
+            type="primary"
+            size="small"
+            onClick={() => handleEditUSer(record)}
+            icon={<EditOutlined />}
+          >
             Edit
           </Button>
 
-          <Button danger onClick={() => handleDeleteUser(record.id)}>
+          <Button
+            danger
+            size="small"
+            onClick={() => handleDeleteUser(record.id)}
+            icon={<DeleteOutlined />}
+          >
             Delete
           </Button>
         </Space>
