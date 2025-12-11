@@ -4,7 +4,6 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import RegisterPage from "./pages/register";
 import HomePage from "./pages/home";
-import UserPage from "./pages/user";
 import LoginPage from "./pages/login";
 import TestAntdEffects from "./pages/test";
 import UserLayout from "./pages/user/UserAppLayout";
@@ -29,10 +28,6 @@ const router = createBrowserRouter([
       {
         index: true, // ho tro hien thi thang con o trang /
         element: <HomePage />,
-      },
-      {
-        path: "user",
-        element: <UserPage />,
       },
     ],
   },
