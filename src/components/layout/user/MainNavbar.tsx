@@ -176,7 +176,12 @@ const MainNavbar: React.FC = () => {
             <ShoppingCart />
           </Link>
           <Dropdown menu={menuProps} trigger={["click"]} placement="bottomLeft">
-            <UserCircle className="w-6 h-6" />
+            <div className="flex items-center gap-2 cursor-pointer">
+              <UserCircle className="w-6 h-6" />
+              <span className="font-bold">
+                Welcome {auth.user?.username || "Guest"} !
+              </span>
+            </div>
           </Dropdown>
         </div>
       </div>

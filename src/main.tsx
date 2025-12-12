@@ -3,7 +3,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import RegisterPage from "./pages/register";
-import HomePage from "./pages/home";
+import HomePage from "./pages/user/home";
 import LoginPage from "./pages/login";
 import TestAntdEffects from "./pages/test";
 import UserLayout from "./pages/user/UserAppLayout";
