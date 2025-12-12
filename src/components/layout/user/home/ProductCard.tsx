@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { Star } from "lucide-react";
 
 type Product = {
   id: string;
@@ -13,7 +14,7 @@ type Product = {
 
 const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
   return (
-    <div className="bg-white rounded-xl shadow-sm p-4 flex flex-col">
+    <div className="bg-white rounded-xl shadow-sm p-4 flex flex-col transform transition-transform duration-300 hover:scale-105 cursor-pointer">
       <div className="relative">
         <Link to={`/product/${product.id}`} className="block">
           <div className="bg-gray-100 rounded-lg p-6 flex items-center justify-center h-48">
@@ -33,11 +34,18 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
       </div>
 
       <div className="mt-4 flex-1 flex flex-col">
-        <h3 className="text-sm font-medium">{product.title}</h3>
+        <h3
+          className="text-sm font-medium overflow-hidden whitespace-nowrap text-ellipsis"
+          title={product.title}
+        >
+          {product.title}
+        </h3>
 
         <div className="mt-2 flex items-center gap-2 text-yellow-500 text-sm">
           {/* simple stars */}
-          <span>⭐ {product.rating}</span>
+          <span>
+            <Star className="w-4 h-4" /> {product.rating}
+          </span>
         </div>
 
         <div className="mt-3 flex items-baseline gap-2">

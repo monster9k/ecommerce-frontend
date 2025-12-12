@@ -22,7 +22,7 @@ const HeroSection = () => {
             </button>
           </div>
 
-          <div className="hidden sm:flex items-center gap-8 ml-6 mt-10">
+          <div className="hidden sm:flex items-center gap-8 ml-6 mt-10 mb-20">
             <div className="text-left">
               <div className="text-4xl font-bold ">200+</div>
               <div className="text-xl text-gray-500  whitespace-nowrap">
@@ -45,7 +45,7 @@ const HeroSection = () => {
         </div>
 
         {/* right image */}
-        <div className="flex justify-center md:justify-end items-start ml-20">
+        <div className="hidden md:flex justify-center md:justify-end items-start ml-20">
           <div className="md:w-[500px] -mt-4">
             {/* Ảnh chính */}
             <img

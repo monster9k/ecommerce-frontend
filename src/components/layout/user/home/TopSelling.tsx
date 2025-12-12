@@ -1,4 +1,3 @@
-import React from "react";
 import ProductCard from "./ProductCard";
 import aoKhoac from "../../../../assets/img/imageHomePage/aokhoacfake.jpg";
 /* sample data */
@@ -41,11 +40,11 @@ const products = [
   },
 ];
 
-const NewArrivals: React.FC = () => {
+const TopSelling = () => {
   return (
-    <section className="py-12 mt-10">
-      <h2 className="text-center !text-4xl md:!text-4xl !font-extrabold tracking-wide">
-        NEW ARRIVALS
+    <section className="py-12 mt-6">
+      <h2 className="text-center !text-4xl md:text-4xl !font-extrabold tracking-wide">
+        TOP SELLING
       </h2>
 
       <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
@@ -63,4 +62,4 @@ const NewArrivals: React.FC = () => {
   );
 };
 
-export default NewArrivals;
+export default TopSelling;

@@ -26,7 +26,7 @@ const Header: React.FC = () => {
   }, [auth.isAuthenticated, navigate, location.pathname]);
 
   return (
-    <div>
+    <div className="fixed top-0 left-0 w-full z-50 border-b border-gray-200">
       {!auth.isAuthenticated && <TopBanner />}
       <MainNavbar />
     </div>
