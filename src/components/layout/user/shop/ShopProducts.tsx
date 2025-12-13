@@ -1,5 +1,6 @@
 import { Star, ArrowRight, ArrowLeft } from "lucide-react";
 import aoKhoacfake from "../../../../assets/img/imageHomePage/aokhoacfake.jpg";
+import { Link } from "react-router-dom";
 
 const products = [
   {
@@ -60,21 +61,29 @@ const ShopProducts = () => {
       {/* Grid */}
       <div className="grid grid-cols-3 gap-2 border-b border-gray-200 pb-4   ">
         {products.map((p) => (
-          <div
-            key={p.id}
-            className=" p-1 transform transition-transform duration-300  hover:scale-105"
+          <Link
+            to={`/shop/${p.id}`}
+            className="block !no-underline !text-inherit"
           >
-            <img src={p.img} className="w-full h-72 object-cover rounded-2xl" />
-            <h3 className="mt-2 !text-xl !font-medium">{p.title}</h3>
+            <div
+              key={p.id}
+              className=" p-1 transform transition-transform duration-300  hover:scale-105"
+            >
+              <img
+                src={p.img}
+                className="w-full h-72 object-cover rounded-2xl"
+              />
+              <h3 className="mt-2 !text-xl !font-medium">{p.title}</h3>
 
-            <div className="flex items-center gap-1 text-yellow-400 mt-1">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} size={14} />
-              ))}
+              <div className="flex items-center gap-1 text-yellow-400 mt-1">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} size={14} />
+                ))}
+              </div>
+
+              <p className="!text-xl !font-semibold mt-1">${p.price}</p>
             </div>
-
-            <p className="!text-xl !font-semibold mt-1">${p.price}</p>
-          </div>
+          </Link>
         ))}
       </div>
 
