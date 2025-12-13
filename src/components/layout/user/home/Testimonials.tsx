@@ -95,7 +95,7 @@ const Testimonials = () => {
                 <Check className="w-3 h-3 ml-2 bg-green-600 rounded-full text-white" />
               </p>
 
-              <p className="text-sm mb-2">{t.text}</p>
+              <p className="text-gray-600 text-sm mb-2">{t.text}</p>
             </div>
           );
         })}

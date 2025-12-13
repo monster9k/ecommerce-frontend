@@ -134,10 +134,10 @@ const MainNavbar: React.FC = () => {
         <div className="flex items-center">
           <Link
             to="/"
-            className="text-black text-2xl font-extrabold tracking-wide"
+            className="text-black !text-3xl !font-extrabold tracking-wide"
             style={{ textDecoration: "none" }}
           >
-            Shop.DC
+            SHOP.DC
           </Link>
         </div>
 
@@ -145,9 +145,12 @@ const MainNavbar: React.FC = () => {
         <div className="flex-grow-0 flex items-center gap-6 ml-6  max-w-2xl w-full ">
           {/* Menu */}
           <ul className="hidden md:flex items-center gap-6 text-sm  text-gray-600 m-0">
-            <li className="hover:text-black cursor-pointer font-medium">
+            <Link
+              to="/shop"
+              className="hover:!text-black cursor-pointer font-medium !no-underline !text-gray-600"
+            >
               Shop
-            </li>
+            </Link>
             <li className="hover:text-black cursor-pointer font-medium">
               On Sale
             </li>

@@ -41,7 +41,10 @@ function UserLayout() {
       ) : (
         <>
           <Header />
-          <Outlet />
+          <div className="pt-20">
+            {" "}
+            <Outlet />
+          </div>
         </>
       )}
     </div>

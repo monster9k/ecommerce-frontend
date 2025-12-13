@@ -19,6 +19,7 @@ import UserListPage from "./pages/admin/Users/UserListPage";
 import InventoryPage from "./pages/admin/InventoryPage";
 import ProductListPage from "./pages/admin/Products/ProductListPage";
 import OrderListPage from "./pages/admin/Orders/OrderListPage";
+import ShopPage from "./pages/user/ShopPage";
 
 const router = createBrowserRouter([
   {
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
       {
         index: true, // ho tro hien thi thang con o trang /
         element: <HomePage />,
+      },
+      {
+        path: "shop",
+        element: <ShopPage />,
       },
     ],
   },
