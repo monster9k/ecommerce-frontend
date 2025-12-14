@@ -164,7 +164,7 @@ const MainNavbar: React.FC = () => {
 
           {/* Search */}
           <div className="flex items-center gap-4 flex-1 max-w-md bg-gray-100 rounded-full px-4 py-2">
-            <Search className="w-6 text-gray-400"></Search>
+            <Search className="w-6 h-6 text-gray-400"></Search>
             <input
               type="text"
               placeholder="Search for products..."
@@ -175,7 +175,7 @@ const MainNavbar: React.FC = () => {
 
         {/* RightIcon / user */}
         <div className="flex items-center gap-10">
-          <Link to="/" className="text-black">
+          <Link to="/cart" className="text-black">
             <ShoppingCart />
           </Link>
           <Dropdown menu={menuProps} trigger={["click"]} placement="bottomLeft">

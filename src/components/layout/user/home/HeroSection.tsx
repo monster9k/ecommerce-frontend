@@ -1,4 +1,5 @@
 import heroImg from "../../../../assets/img/imageHomePage/hero-model.png";
+import { Link } from "react-router-dom";
 
 const HeroSection = () => {
   return (
@@ -17,9 +18,12 @@ const HeroSection = () => {
             style.
           </p>
           <div className="mt-10 flex items-center gap-4">
-            <button className="!rounded-full bg-black text-white px-14 py-2 !text-xl font-medium hover:!bg-gray-400 hover:!text-black">
+            <Link
+              to="/shop"
+              className="!rounded-full bg-black text-white px-14 py-2 !text-xl font-medium hover:!bg-gray-400 hover:!text-black !no-underline"
+            >
               Shop Now
-            </button>
+            </Link>
           </div>
 
           <div className="hidden sm:flex items-center gap-8 ml-6 mt-10 mb-20">

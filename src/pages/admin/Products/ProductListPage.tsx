@@ -6,17 +6,28 @@ import { getProductDBApi, deleteProductDBApi } from "../../../utils/productApi";
 
 import CreateProductModal from "./CreateProductModal";
 import EditProductModal from "./EditProductModal";
+
+const FALLBACK_IMAGE = "https://via.placeholder.com/40x40?text=No+Img";
+
+export interface ProductImage {
+  id: number;
+  imageUrl: string;
+}
 export interface ProductType {
   id: number; // id của variant (hoặc product nếu không có variant)
   productId: number;
   productName: string;
   categoryName?: string;
   description?: string;
+
   size: string;
   color: string;
   price: number;
   stock: number;
-  imageUrl?: string;
+  imageUrl: string;
+
+  images?: ProductImage[];
+  styles?: string[];
 }
 const ProductListPage: React.FC = () => {
   const [dataProduct, setDataProduct] = useState<ProductType[]>([]);
@@ -40,9 +51,14 @@ const ProductListPage: React.FC = () => {
     fectchProduct();
   }, []);
 
-  const handleProductCreated = (newProducts: ProductType[]) => {
-    setDataProduct((prev) => [...prev, ...newProducts]);
+  const handleProductCreated = (newProducts: ProductType | ProductType[]) => {
+    const productsArray = Array.isArray(newProducts)
+      ? newProducts
+      : [newProducts];
 
+    console.log("ADDING PRODUCTS:", productsArray);
+
+    setDataProduct((prev) => [...prev, ...productsArray].filter(Boolean));
     // Hoặc nếu muốn sync chính xác với DB:
     // fectchProduct();
   };
@@ -73,17 +89,34 @@ const ProductListPage: React.FC = () => {
       width: 300,
       render: (text, record) => (
         <div className="flex items-center space-x-3">
-          <div className="mr-2"></div>
-
           <img
-            src={record.imageUrl}
+            src={record.imageUrl || FALLBACK_IMAGE}
             alt={text}
-            className="w-10 h-10 rounded-md"
+            className="w-10 h-10 rounded-md object-cover"
           />
+
           <div className="flex flex-col">
             <span className="font-medium">{text}</span>
             <span className="text-gray-400 text-sm">{record.description}</span>
           </div>
+        </div>
+      ),
+    },
+    {
+      title: "Styles",
+      dataIndex: "styles",
+      key: "styles",
+      align: "center",
+      render: (styles?: string[]) => (
+        <div className="flex gap-1 justify-center flex-wrap">
+          {styles?.map((s) => (
+            <span
+              key={s}
+              className="px-2 py-0.5 text-xs rounded bg-blue-100 text-blue-700"
+            >
+              {s}
+            </span>
+          ))}
         </div>
       ),
     },

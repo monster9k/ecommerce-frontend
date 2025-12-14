@@ -6,12 +6,12 @@ export const getProductDBApi = () => {
   return axios.get(URL_API);
 };
 
-export const createProductDBApi = (values: any, file?: File) => {
+export const createProductDBApi = (values: any, files?: File[]) => {
   const formData = new FormData();
 
-  if (file) {
+  files?.slice(0, 3).forEach((file) => {
     formData.append("image", file);
-  }
+  });
 
   formData.append("categoryId", values.categoryId);
   formData.append("name", values.productName);
@@ -20,6 +20,10 @@ export const createProductDBApi = (values: any, file?: File) => {
   formData.append("color", values.color || "");
   formData.append("price", String(values.price || 0));
   formData.append("stock", String(values.stock || 0));
+
+  values.styles?.forEach((styleId: number) => {
+    formData.append("styles", String(styleId));
+  });
 
   return axios.post<ProductType[]>("/api/productDB", formData, {
     headers: { "Content-Type": "multipart/form-data" },

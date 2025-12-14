@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Modal, Form, Input, InputNumber, App } from "antd";
+import { Modal, Form, Input, InputNumber, App, Select } from "antd";
 import { createProductDBApi } from "../../../utils/productApi";
 
 import type { ProductType } from "./ProductListPage";
@@ -16,18 +16,19 @@ const CreateProductModal: React.FC<CreateProductModalProps> = ({
   onCreated,
 }) => {
   const [form] = Form.useForm();
-  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [loading, setLoading] = useState(false);
   const { message } = App.useApp();
   const handleCreateProduct = async (values: any) => {
     try {
       setLoading(true);
-      const res = await createProductDBApi(values, imageFile || undefined);
+      const res = await createProductDBApi(values, imageFiles);
 
       message.success("Product created successfully");
       form.resetFields();
-      setImageFile(null);
+      setImageFiles([]);
       onCreated(res.data); // báo cho parent biết có product mới
+      console.log("CREATED PRODUCT:", res.data);
       onClose();
     } catch (e) {
       console.log(e);
@@ -61,6 +62,18 @@ const CreateProductModal: React.FC<CreateProductModalProps> = ({
         >
           <InputNumber style={{ width: "100%" }} />
         </Form.Item>
+        <Form.Item name="styles" label="Styles">
+          <Select
+            mode="multiple"
+            placeholder="Select styles"
+            options={[
+              { label: "Casual", value: 1 },
+              { label: "Formal", value: 2 },
+              { label: "Party", value: 3 },
+              { label: "Gym", value: 4 },
+            ]}
+          />
+        </Form.Item>
         <Form.Item name="description" label="Description">
           <Input.TextArea rows={3} />
         </Form.Item>
@@ -82,8 +95,10 @@ const CreateProductModal: React.FC<CreateProductModalProps> = ({
             <input
               type="file"
               accept="image/*"
-              onChange={(e) => setImageFile(e.target.files?.[0] || null)}
+              multiple
+              onChange={(e) => setImageFiles(Array.from(e.target.files || []))}
             />
+            <p className="text-xs text-gray-400">Upload tối đa 3 ảnh</p>
           </div>
         </Form.Item>
       </Form>
