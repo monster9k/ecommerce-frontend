@@ -30,11 +30,12 @@ export const createProductDBApi = (values: any, files?: File[]) => {
   });
 };
 
-export const editProductDBApi = (id: number, values: any, file?: File) => {
+export const editProductDBApi = (id: number, values: any, files?: File[]) => {
   const formData = new FormData();
-  if (file) {
+
+  files?.slice(0, 3).forEach((file) => {
     formData.append("image", file);
-  }
+  });
 
   formData.append("productName", values.productName);
   formData.append("description", values.description || "");
@@ -42,6 +43,10 @@ export const editProductDBApi = (id: number, values: any, file?: File) => {
   formData.append("color", values.color || "");
   formData.append("price", String(values.price || 0));
   formData.append("stock", String(values.stock || 0));
+
+  values.styles?.forEach((styleId: number) => {
+    formData.append("styles", String(styleId));
+  });
 
   return axios.put<ProductType[]>(`/api/productDB/${id}`, formData, {
     headers: { "Content-Type": "multipart/form-data" },

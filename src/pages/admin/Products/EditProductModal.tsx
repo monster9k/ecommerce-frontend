@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Modal, Form, Input, InputNumber, message } from "antd";
+import { Modal, Form, Input, InputNumber, message, Select } from "antd";
 
 import type { ProductType } from "./ProductListPage";
 import { editProductDBApi } from "../../../utils/productApi";
@@ -18,7 +18,7 @@ const EditProductModal: React.FC<EditProductModalProps> = ({
   onUpdated,
 }) => {
   const [form] = Form.useForm();
-  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [submitting, setSubmitting] = useState(false);
 
   // Khi mở modal và có record thì fill form
@@ -32,10 +32,10 @@ const EditProductModal: React.FC<EditProductModalProps> = ({
         price: record.price,
         stock: record.stock,
       });
-      setImageFile(null);
+      setImageFiles([]);
     } else {
       form.resetFields();
-      setImageFile(null);
+      setImageFiles([]);
     }
   }, [record, open, form]);
 
@@ -47,7 +47,7 @@ const EditProductModal: React.FC<EditProductModalProps> = ({
       const res = await editProductDBApi(
         record.id, // id = variantId ở dashboard
         values,
-        imageFile || undefined
+        imageFiles.length > 0 ? imageFiles : undefined
       );
       console.log("EDIT RES DATA: ", res.data);
       const updated = Array.isArray(res.data) ? res.data[0] : res.data;
@@ -80,6 +80,19 @@ const EditProductModal: React.FC<EditProductModalProps> = ({
           <Input />
         </Form.Item>
 
+        <Form.Item name="styles" label="Styles">
+          <Select
+            mode="multiple"
+            placeholder="Select styles"
+            options={[
+              { label: "Casual", value: 1 },
+              { label: "Formal", value: 2 },
+              { label: "Party", value: 3 },
+              { label: "Gym", value: 4 },
+            ]}
+          />
+        </Form.Item>
+
         <Form.Item name="description" label="Description">
           <Input.TextArea rows={3} />
         </Form.Item>
@@ -101,12 +114,15 @@ const EditProductModal: React.FC<EditProductModalProps> = ({
         </Form.Item>
 
         <Form.Item label="Image">
-          <div className="border">
+          <div className="border ">
+            {" "}
             <input
               type="file"
               accept="image/*"
-              onChange={(e) => setImageFile(e.target.files?.[0] || null)}
+              multiple
+              onChange={(e) => setImageFiles(Array.from(e.target.files || []))}
             />
+            <p className="text-xs text-gray-400">Upload tối đa 3 ảnh</p>
           </div>
         </Form.Item>
       </Form>

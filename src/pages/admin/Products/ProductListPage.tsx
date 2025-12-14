@@ -63,9 +63,12 @@ const ProductListPage: React.FC = () => {
     // fectchProduct();
   };
 
-  const handleProductEdited = (updated: ProductType) => {
+  const handleProductEdited = (updated: ProductType | ProductType[]) => {
+    const updatedProduct = Array.isArray(updated) ? updated[0] : updated;
     setDataProduct((prev) =>
-      prev.map((item) => (item.id === updated.id ? updated : item))
+      prev.map((item) =>
+        item.id === updatedProduct.id ? updatedProduct : item
+      )
     );
   };
 
