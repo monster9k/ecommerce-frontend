@@ -9,25 +9,16 @@ export const getProductDBApi = () => {
 export const createProductDBApi = (values: any, files?: File[]) => {
   const formData = new FormData();
 
-  files?.slice(0, 3).forEach((file) => {
-    formData.append("image", file);
-  });
+  files?.forEach((f) => formData.append("image", f));
 
   formData.append("categoryId", values.categoryId);
-  formData.append("name", values.productName);
+  formData.append("productName", values.productName);
   formData.append("description", values.description || "");
-  formData.append("size", values.size || "");
-  formData.append("color", values.color || "");
-  formData.append("price", String(values.price || 0));
-  formData.append("stock", String(values.stock || 0));
+  formData.append("variants", JSON.stringify(values.variants));
 
-  values.styles?.forEach((styleId: number) => {
-    formData.append("styles", String(styleId));
-  });
+  values.styles?.forEach((id: number) => formData.append("styles", String(id)));
 
-  return axios.post<ProductType[]>("/api/productDB", formData, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
+  return axios.post("/api/productDB", formData);
 };
 
 export const editProductDBApi = (id: number, values: any, files?: File[]) => {
@@ -41,16 +32,14 @@ export const editProductDBApi = (id: number, values: any, files?: File[]) => {
   formData.append("description", values.description || "");
   formData.append("size", values.size || "");
   formData.append("color", values.color || "");
-  formData.append("price", String(values.price || 0));
-  formData.append("stock", String(values.stock || 0));
+  formData.append("price", String(values.price));
+  formData.append("stock", String(values.stock));
 
   values.styles?.forEach((styleId: number) => {
     formData.append("styles", String(styleId));
   });
 
-  return axios.put<ProductType[]>(`/api/productDB/${id}`, formData, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
+  return axios.put<ProductType[]>(`/api/productDB/${id}`, formData);
 };
 
 export const deleteProductDBApi = (id: number) => {

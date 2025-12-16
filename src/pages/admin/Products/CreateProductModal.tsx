@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Modal, Form, Input, InputNumber, App, Select } from "antd";
+import { Modal, Form, Input, InputNumber, App, Select, Button } from "antd";
 import { createProductDBApi } from "../../../utils/productApi";
 
 import type { ProductType } from "./ProductListPage";
@@ -19,16 +19,23 @@ const CreateProductModal: React.FC<CreateProductModalProps> = ({
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [loading, setLoading] = useState(false);
   const { message } = App.useApp();
+  const [variants, setVariants] = useState([
+    { size: "", color: "", price: 0, stock: 0 },
+  ]);
   const handleCreateProduct = async (values: any) => {
     try {
       setLoading(true);
-      const res = await createProductDBApi(values, imageFiles);
+      const payload = {
+        ...values,
+        variants,
+      };
+      const res = await createProductDBApi(payload, imageFiles);
 
       message.success("Product created successfully");
       form.resetFields();
       setImageFiles([]);
       onCreated(res.data); // báo cho parent biết có product mới
-      console.log("CREATED PRODUCT:", res.data);
+      console.log("CREATED PRODUCT:", res?.data);
       onClose();
     } catch (e) {
       console.log(e);
@@ -77,18 +84,54 @@ const CreateProductModal: React.FC<CreateProductModalProps> = ({
         <Form.Item name="description" label="Description">
           <Input.TextArea rows={3} />
         </Form.Item>
-        <Form.Item name="size" label="Size">
-          <Input />
-        </Form.Item>
-        <Form.Item name="color" label="Color">
-          <Input />
-        </Form.Item>
-        <Form.Item name="price" label="Price" rules={[{ required: true }]}>
-          <InputNumber style={{ width: "100%" }} />
-        </Form.Item>
-        <Form.Item name="stock" label="Stock" rules={[{ required: true }]}>
-          <InputNumber style={{ width: "100%" }} />
-        </Form.Item>
+        {variants.map((v, idx) => (
+          <div key={idx} className="border p-2 mb-2 rounded">
+            <Input
+              placeholder="Size"
+              value={v.size}
+              onChange={(e) => {
+                const next = [...variants];
+                next[idx].size = e.target.value;
+                setVariants(next);
+              }}
+            />
+            <Input
+              placeholder="Color"
+              value={v.color}
+              onChange={(e) => {
+                const next = [...variants];
+                next[idx].color = e.target.value;
+                setVariants(next);
+              }}
+            />
+            <InputNumber
+              placeholder="Price"
+              onChange={(val) => {
+                const next = [...variants];
+                next[idx].price = Number(val);
+                setVariants(next);
+              }}
+            />
+            <InputNumber
+              placeholder="Stock"
+              onChange={(val) => {
+                const next = [...variants];
+                next[idx].stock = Number(val);
+                setVariants(next);
+              }}
+            />
+          </div>
+        ))}
+        <Button
+          onClick={() =>
+            setVariants([
+              ...variants,
+              { size: "", color: "", price: 0, stock: 0 },
+            ])
+          }
+        >
+          + Add Variant
+        </Button>
         <Form.Item label="Image">
           <div className="border ">
             {" "}

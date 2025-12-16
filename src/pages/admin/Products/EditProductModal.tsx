@@ -8,7 +8,7 @@ type EditProductModalProps = {
   open: boolean;
   onClose: () => void;
   record: ProductType | null;
-  onUpdated: (updated: ProductType) => void;
+  onUpdated: (updated: ProductType[]) => void;
 };
 
 const EditProductModal: React.FC<EditProductModalProps> = ({
@@ -50,8 +50,8 @@ const EditProductModal: React.FC<EditProductModalProps> = ({
         imageFiles.length > 0 ? imageFiles : undefined
       );
       console.log("EDIT RES DATA: ", res.data);
-      const updated = Array.isArray(res.data) ? res.data[0] : res.data;
-      onUpdated(updated);
+      onUpdated(res.data); // array variants
+
       message.success("Product updated successfully");
       onClose();
     } catch (error) {

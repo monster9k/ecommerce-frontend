@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import { Table, Button, Popconfirm } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
-import { getProductDBApi, deleteProductDBApi } from "../../../utils/productApi";
+import { getProductDBApi } from "../../../utils/productApi";
 
 import CreateProductModal from "./CreateProductModal";
 import EditProductModal from "./EditProductModal";
+import { deleteVariant } from "../../../utils/productVariant";
 
 const FALLBACK_IMAGE = "https://via.placeholder.com/40x40?text=No+Img";
 
@@ -63,26 +64,32 @@ const ProductListPage: React.FC = () => {
     // fectchProduct();
   };
 
-  const handleProductEdited = (updated: ProductType | ProductType[]) => {
-    const updatedProduct = Array.isArray(updated) ? updated[0] : updated;
+  const handleProductEdited = (updatedList: ProductType[]) => {
     setDataProduct((prev) =>
-      prev.map((item) =>
-        item.id === updatedProduct.id ? updatedProduct : item
-      )
+      prev.map((item) => {
+        const found = updatedList.find((u) => u.id === item.id);
+        return found ?? item;
+      })
     );
   };
 
-  const handleProductDeleted = async (deletedId: number) => {
+  const handleProductDeleted = async (variantId: number) => {
     try {
-      await deleteProductDBApi(deletedId);
-      // Cập nhật lại state: remove tất cả item có cùng productId
-      setDataProduct((prev) =>
-        prev.filter((item) => item.productId !== deletedId)
-      );
+      const res = await deleteVariant(variantId);
+
+      setDataProduct((prev) => prev.filter((item) => item.id !== variantId));
+
+      // nếu backend báo product đã bị xóa (variant cuối)
+      if (res.data?.productDeleted) {
+        setDataProduct((prev) =>
+          prev.filter((item) => item.productId !== res.data.productId)
+        );
+      }
     } catch (e) {
       console.log(e);
     }
   };
+
   const columns: ColumnsType<ProductType> = [
     {
       title: "Item",
@@ -175,7 +182,7 @@ const ProductListPage: React.FC = () => {
             okText="Yes"
             cancelText="No"
             okType="danger"
-            onConfirm={() => handleProductDeleted(record.productId)}
+            onConfirm={() => handleProductDeleted(record.id)}
           >
             <Button size="small" danger icon={<DeleteOutlined />}>
               Delete
