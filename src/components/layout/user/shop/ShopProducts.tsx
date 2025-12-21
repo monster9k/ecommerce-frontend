@@ -4,16 +4,29 @@ import type { ProductDataType } from "../../../../pages/user/ShopPage";
 
 interface ShopProductsProps {
   products: ProductDataType[]; // Nhận vào một MẢNG sản phẩm
+  currentPage: number;
+  totalPages: number;
+  totalProducts: number;
+  onPageChange: (page: number) => void; // Hàm callback để đổi trang
 }
 
-const ShopProducts = ({ products }: ShopProductsProps) => {
+const ShopProducts = ({
+  products,
+  currentPage,
+  totalPages,
+  totalProducts,
+  onPageChange,
+}: ShopProductsProps) => {
+  const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
+
   return (
     <section className="flex-1">
       {/* Header */}
       <div className="flex justify-between items-center mb-2">
         <h2 className="text-xl font-semibold">Casual</h2>
         <span className="text-sm text-gray-500">
-          Showing 1–10 of 100 Products
+          Showing {products.length > 0 ? (currentPage - 1) * 9 + 1 : 0}–
+          {Math.min(currentPage * 9, totalProducts)} of {totalProducts} Products
         </span>
       </div>
 
@@ -52,25 +65,44 @@ const ShopProducts = ({ products }: ShopProductsProps) => {
       </div>
 
       {/* Pagination */}
-      <div className="flex justify-between mt-8">
-        <button className="border px-4 py-2 !rounded-xl flex items-center justify-between gap-2 !text-sm font-bold hover:!bg-black hover:!text-white">
-          <ArrowLeft className="w-4 h-4 " />
-          Previous
-        </button>
-        <div className="">
-          <button className="border px-3 py-2 !rounded-xl bg-gray-200 text-black">
-            1
-          </button>
-          <button className=" px-3 py-2  rounded  text-black">2</button>
-          <button className=" px-3 py-2  rounded  text-black">3</button>
-          <button className=" px-3 py-2  rounded  text-black">4</button>
-        </div>
 
-        <button className="border px-4 py-2 !rounded-xl flex items-center justify-between gap-2 !text-sm font-bold  hover:!bg-black hover:!text-white">
-          Next
-          <ArrowRight className="w-4 h-4 " />
-        </button>
-      </div>
+      {totalPages > 1 && (
+        <div className="flex justify-between mt-8">
+          <button
+            className="border px-4 py-2 !rounded-xl flex items-center justify-between gap-2 !text-sm font-bold hover:!bg-black hover:!text-white"
+            onClick={() => onPageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+          >
+            <ArrowLeft className="w-4 h-4 " />
+            Previous
+          </button>
+          <div className="">
+            {pageNumbers.map((num) => (
+              <button
+                key={num}
+                onClick={() => onPageChange(num)}
+                className={`px-3 py-2 !rounded-xl transition-colors !text-sm       
+                  ${
+                    currentPage === num
+                      ? "bg-black text-white" // Trang hiện tại: Đen
+                      : "bg-gray-100 text-black hover:bg-gray-200" // Trang khác: Xám
+                  }`}
+              >
+                {num}
+              </button>
+            ))}
+          </div>
+
+          <button
+            className="border px-4 py-2 !rounded-xl flex items-center justify-between gap-2 !text-sm font-bold  hover:!bg-black hover:!text-white"
+            onClick={() => onPageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+          >
+            Next
+            <ArrowRight className="w-4 h-4 " />
+          </button>
+        </div>
+      )}
     </section>
   );
 };

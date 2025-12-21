@@ -40,6 +40,8 @@ const ShopPage = () => {
     page: 1,
     limit: 9,
   });
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalProducts, setTotalProducts] = useState(0);
 
   const fetchProducts = async () => {
     try {
@@ -60,8 +62,10 @@ const ShopPage = () => {
 
       const res = await getProducts(params);
       console.log(res?.data.data);
-
+      console.log(res?.data?.pagination);
       setProducts(res?.data?.data);
+      setTotalPages(res?.data?.pagination?.totalPages);
+      setTotalProducts(res?.data?.pagination?.total);
     } catch (error) {
       console.log(error);
     } finally {
@@ -71,14 +75,29 @@ const ShopPage = () => {
 
   useEffect(() => {
     fetchProducts();
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth", // Tạo hiệu ứng trượt mượt mà thay vì nhảy "bụp" phát lên
+    });
   }, [filters]);
+
+  const handlePageChange = (newPage: number) => {
+    setFilters((prev) => ({ ...prev, page: newPage }));
+  };
 
   return (
     <div className="min-h-screen bg-white mt-20">
       <main className="max-w-6xl mx-auto px-4">
         <div className="flex gap-6">
           <ShopSidebar filters={filters} setFilters={setFilters} />
-          <ShopProducts products={products} />
+          <ShopProducts
+            products={products}
+            currentPage={filters.page}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+            totalProducts={totalProducts}
+          />
         </div>
       </main>
       <Newsletter />

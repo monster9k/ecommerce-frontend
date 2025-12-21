@@ -159,6 +159,12 @@ const ProductListPage: React.FC = () => {
       align: "center",
     },
     {
+      title: "Color",
+      dataIndex: "color",
+      key: "color",
+      align: "center",
+    },
+    {
       title: "Actions",
       key: "actions",
       align: "center",
