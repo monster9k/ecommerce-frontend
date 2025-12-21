@@ -59,3 +59,9 @@ export const getProducts = (params: any) => {
     },
   });
 };
+
+export const getProductById = (id: number) => {
+  const URL_API = `/api/product/${id}`;
+
+  return axios.get(URL_API);
+};
