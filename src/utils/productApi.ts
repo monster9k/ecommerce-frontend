@@ -1,4 +1,5 @@
 import axios from "./axios.custiomize";
+import qs from "qs";
 import type { ProductType } from "../pages/admin/Products/ProductListPage";
 export const getProductDBApi = () => {
   const URL_API = "/api/productDB";
@@ -44,4 +45,17 @@ export const editProductDBApi = (id: number, values: any, files?: File[]) => {
 
 export const deleteProductDBApi = (id: number) => {
   return axios.delete(`/api/productDB/${id}`);
+};
+
+// shopPage product
+export const getProducts = (params: any) => {
+  const URL_API = "/api/product";
+
+  return axios.get(URL_API, {
+    params: params, // 1. Phải đặt biến params vào key 'params'
+
+    paramsSerializer: (params) => {
+      return qs.stringify(params, { arrayFormat: "repeat" });
+    },
+  });
 };

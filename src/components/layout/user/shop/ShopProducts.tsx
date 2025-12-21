@@ -1,53 +1,12 @@
 import { Star, ArrowRight, ArrowLeft } from "lucide-react";
-import aoKhoacfake from "../../../../assets/img/imageHomePage/aokhoacfake.jpg";
 import { Link } from "react-router-dom";
+import type { ProductDataType } from "../../../../pages/user/ShopPage";
 
-const products = [
-  {
-    id: 1,
-    title: "Gradient Graphic T-shirt",
-    price: 145,
-    img: aoKhoacfake,
-  },
-  {
-    id: 2,
-    title: "Polo with Tipping Details",
-    price: 180,
-    img: aoKhoacfake,
-  },
-  {
-    id: 3,
-    title: "Polo with Tipping Details",
-    price: 180,
-    img: aoKhoacfake,
-  },
-  {
-    id: 4,
-    title: "Polo with Tipping Details",
-    price: 180,
-    img: aoKhoacfake,
-  },
-  {
-    id: 5,
-    title: "Polo with Tipping Details",
-    price: 180,
-    img: aoKhoacfake,
-  },
-  {
-    id: 6,
-    title: "Polo with Tipping Details",
-    price: 180,
-    img: aoKhoacfake,
-  },
-  {
-    id: 7,
-    title: "Polo with Tipping Details",
-    price: 180,
-    img: aoKhoacfake,
-  },
-];
+interface ShopProductsProps {
+  products: ProductDataType[]; // Nhận vào một MẢNG sản phẩm
+}
 
-const ShopProducts = () => {
+const ShopProducts = ({ products }: ShopProductsProps) => {
   return (
     <section className="flex-1">
       {/* Header */}
@@ -70,10 +29,10 @@ const ShopProducts = () => {
               className=" p-1 transform transition-transform duration-300  hover:scale-105"
             >
               <img
-                src={p.img}
+                src={p.images[0].imageUrl}
                 className="w-full h-72 object-cover rounded-2xl"
               />
-              <h3 className="mt-2 !text-xl !font-medium">{p.title}</h3>
+              <h3 className="mt-2 !text-xl !font-medium">{p.name}</h3>
 
               <div className="flex items-center gap-1 text-yellow-400 mt-1">
                 {[...Array(5)].map((_, i) => (
@@ -81,7 +40,12 @@ const ShopProducts = () => {
                 ))}
               </div>
 
-              <p className="!text-xl !font-semibold mt-1">${p.price}</p>
+              <p className="!text-xl !font-semibold mt-1">
+                {Number(p.variants[0].price).toLocaleString("vi-VN", {
+                  style: "currency",
+                  currency: "VND",
+                })}
+              </p>
             </div>
           </Link>
         ))}
