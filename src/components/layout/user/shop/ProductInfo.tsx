@@ -2,6 +2,8 @@ import { Star } from "lucide-react";
 import { useState } from "react";
 
 import type { productDetailType } from "../../../../pages/user/ProductDetailPage"; // Import type từ cha hoặc file types
+import { message } from "antd";
+import { addToCartApi } from "../../../../utils/cartApi";
 
 interface ProductInfoProps {
   product: productDetailType;
@@ -19,6 +21,38 @@ const ProductInfo = ({ product }: ProductInfoProps) => {
   const uniqueSizes = [...new Set(product?.variants.map((v) => v.size))].filter(
     Boolean
   );
+
+  const handleAddToCart = async () => {
+    //validate
+    if (!selectedColor || !selectedSize) {
+      message.error("Please select Size and Color!");
+      return;
+    }
+    //Tìm Variant ID dựa trên Size và Color đã chọn
+    const selectedVariant = product.variants.find(
+      (v) => v.color === selectedColor && v.size === selectedSize
+    );
+
+    if (!selectedVariant) {
+      message.error("This variant is unavailable.");
+      return;
+    }
+
+    if (selectedVariant.stock < quantity) {
+      message.error("Not enough stock.");
+      return;
+    }
+
+    //call api
+    try {
+      await addToCartApi(selectedVariant.id, quantity);
+      message.success("Added to cart successfully!");
+      // Có thể dispatch action để update số lượng giỏ hàng trên Header nếu dùng Redux/Context
+    } catch (error) {
+      console.error(error);
+      message.error("Failed to add to cart.");
+    }
+  };
 
   return (
     <div>
@@ -116,7 +150,10 @@ const ProductInfo = ({ product }: ProductInfoProps) => {
           </button>
         </div>
 
-        <button className="w-full bg-black text-white px-6 py-2 !rounded-4xl transform transition-transform duration-300 hover:scale-105">
+        <button
+          className="w-full bg-black text-white px-6 py-2 !rounded-4xl transform transition-transform duration-300 hover:scale-105"
+          onClick={handleAddToCart}
+        >
           Add to Cart
         </button>
       </div>

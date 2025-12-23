@@ -1,71 +1,30 @@
 import { Minus, Plus, Trash2 } from "lucide-react";
 
-import aoKhoac from "../../../../assets/img/imageHomePage/aokhoacfake.jpg";
-
-const cartItems = [
-  {
-    id: 1,
-    name: "Gradient Graphic T-shirt",
-    price: 145,
-    size: "M",
-    color: "White",
-    img: aoKhoac,
-    quantity: 1,
-  },
-  {
-    id: 2,
-    name: "Checkered Shirt",
-    price: 180,
-    size: "XS",
-    color: "Red",
-    img: aoKhoac,
-    quantity: 1,
-  },
-  {
-    id: 3,
-    name: "Checkered Shirt",
-    price: 180,
-    size: "XS",
-    color: "Red",
-    img: aoKhoac,
-    quantity: 1,
-  },
-  {
-    id: 4,
-    name: "Checkered Shirt",
-    price: 180,
-    size: "XS",
-    color: "Red",
-    img: aoKhoac,
-    quantity: 1,
-  },
-  {
-    id: 5,
-    name: "Checkered Shirt",
-    price: 180,
-    size: "XS",
-    color: "Red",
-    img: aoKhoac,
-    quantity: 1,
-  },
-];
-
-const CartItems = () => {
+const CartItems = ({ cartData }: any) => {
   return (
     <div className="md:col-span-2 space-y-4 border !rounded-3xl p-4">
-      {cartItems.map((item) => (
+      {cartData.map((item: any) => (
         <div
           key={item.id}
           className="flex items-center gap-4 border-b border-gray-200 p-4 last:border-b-0"
         >
-          <img src={item.img} className="w-28 h-32 object-cover !rounded-2xl" />
+          <img
+            src={item.productVariant.product.images[0].imageUrl}
+            className="w-28 h-32 object-cover !rounded-2xl"
+          />
 
           <div className="flex-1">
-            <h3 className="font-medium">{item.name}</h3>
+            <h3 className="font-medium">{item.productVariant.product.name}</h3>
             <p className="text-sm text-gray-500">
-              Size: {item.size} | Color: {item.color}
+              Size: {item.productVariant.size} | Color:{" "}
+              {item.productVariant.color}
             </p>
-            <p className="!text-xl !font-bold mt-1">${item.price}</p>
+            <p className="!text-xl !font-bold mt-1">
+              {Number(item.productVariant.price).toLocaleString("vi-VN", {
+                style: "currency",
+                currency: "VND",
+              })}
+            </p>
           </div>
 
           {/* Quantity */}

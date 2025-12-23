@@ -65,3 +65,14 @@ export const getProductById = (id: number) => {
 
   return axios.get(URL_API);
 };
+
+export const getRelatedProducts = (categoryId: number, styles: string[]) => {
+  const params = {
+    categoryId: categoryId,
+    styles: styles,
+    limit: 5,
+    page: 1,
+  };
+
+  return getProducts(params);
+};

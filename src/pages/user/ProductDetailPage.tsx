@@ -25,6 +25,12 @@ export interface productDetailType {
     price: string | number; // Backend có thể trả về string hoặc number
     stock: number;
   }[];
+  styles: {
+    style: {
+      id: number;
+      name: string;
+    };
+  }[];
 }
 
 const ProductDetailPage = () => {
@@ -57,6 +63,9 @@ const ProductDetailPage = () => {
       <div className="min-h-screen pt-24 text-center">Product not found</div>
     );
 
+  const styleNames = product.styles?.map((s) => s.style.name) || [];
+
+  // console.log("product:", product);
   return (
     <div className="min-h-screen bg-white mt-20">
       <main className="max-w-6xl mx-auto px-4">
@@ -66,7 +75,11 @@ const ProductDetailPage = () => {
           <ProductInfo product={product} />
         </div>
 
-        <RelatedProducts />
+        <RelatedProducts
+          categoryId={product.category.id}
+          styles={styleNames}
+          currentProductId={product.id}
+        />
       </main>
 
       <Newsletter />

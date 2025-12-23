@@ -34,6 +34,7 @@ const ShopProducts = ({
       <div className="grid grid-cols-3 gap-2 border-b border-gray-200 pb-4   ">
         {products.map((p) => (
           <Link
+            key={p.id}
             to={`/shop/${p.id}`}
             className="block !no-underline !text-inherit"
           >
