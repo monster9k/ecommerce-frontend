@@ -22,6 +22,7 @@ import OrderListPage from "./pages/admin/Orders/OrderListPage";
 import ShopPage from "./pages/user/ShopPage";
 import ProductDetailPage from "./pages/user/ProductDetailPage";
 import CartPage from "./pages/user/CartPage";
+import ProfilePage from "./pages/user/ProfilePage";
 
 const router = createBrowserRouter([
   {
@@ -42,6 +43,10 @@ const router = createBrowserRouter([
       {
         path: "cart",
         element: <CartPage />,
+      },
+      {
+        path: "profile",
+        element: <ProfilePage />,
       },
     ],
   },

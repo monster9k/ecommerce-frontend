@@ -27,11 +27,19 @@ const getUserApi = () => {
   return axios.get(URL_API);
 };
 
-const editUserApi = (id: number, username: string, email: string) => {
+const editUserApi = (
+  id: number,
+  username: string,
+  email: string,
+  phone: string,
+  address: string
+) => {
   const URL_API = `/api/edit-user/${id}`;
   const data = {
     username,
     email,
+    phone,
+    address,
   };
   return axios.put(URL_API, data);
 };

@@ -9,6 +9,8 @@ interface DataType {
   username: string;
   email: string;
   role: string;
+  phone: string;
+  address: string;
 }
 
 import { getUserApi, editUserApi, deleteUserApi } from "../../../utils/api";
@@ -41,8 +43,8 @@ const UserListPage: React.FC = () => {
   const handleSubmitEdit = async (values: DataType) => {
     if (!selectedUser) return;
     try {
-      const { username, email } = values;
-      await editUserApi(selectedUser.id, username, email);
+      const { username, email, phone, address } = values;
+      await editUserApi(selectedUser.id, username, email, phone, address);
       notification.success({ message: "Update success!" });
       setDataUser((prev) => {
         return prev.map((u) =>
@@ -69,6 +71,8 @@ const UserListPage: React.FC = () => {
   useEffect(() => {
     fetchUser();
   }, []);
+
+  console.log(dataUser);
   const columns: TableProps<DataType>["columns"] = [
     {
       title: "Name",
@@ -84,6 +88,16 @@ const UserListPage: React.FC = () => {
     {
       title: "Role",
       dataIndex: "role",
+      align: "center",
+    },
+    {
+      title: "Phone",
+      dataIndex: "phone",
+      align: "center",
+    },
+    {
+      title: "Address",
+      dataIndex: "address",
       align: "center",
     },
 
