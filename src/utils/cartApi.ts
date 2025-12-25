@@ -11,3 +11,11 @@ export const addToCartApi = (productVariantId: number, quantity: number) => {
 export const getCartApi = () => {
   return axios.get("/api/cart");
 };
+
+export const updateCartItemApi = (cartItemId: number, quantity: number) => {
+  return axios.put(`/api/cart/update/${cartItemId}`, { quantity });
+};
+
+export const removeCartItemApi = (cartItemId: number) => {
+  return axios.delete(`/api/cart/delete/${cartItemId}`);
+};

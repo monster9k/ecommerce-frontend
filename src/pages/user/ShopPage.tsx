@@ -4,6 +4,7 @@ import ShopSidebar from "../../components/layout/user/shop/ShopSidebar";
 import ShopProducts from "../../components/layout/user/shop/ShopProducts";
 import { getProducts } from "../../utils/productApi";
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
 export interface ProductDataType {
   id: number;
@@ -29,6 +30,8 @@ export interface FiltersType {
 }
 
 const ShopPage = () => {
+  const [searchParams] = useSearchParams();
+  const searchTerm = searchParams.get("search"); // Lấy giá trị sau chữ ?search=
   const [products, setProducts] = useState<ProductDataType[]>([]);
   const [loading, setLoading] = useState(false);
   const [filters, setFilters] = useState<FiltersType>({
@@ -50,6 +53,9 @@ const ShopPage = () => {
         page: filters.page,
         limit: filters.limit,
       };
+      if (searchTerm) {
+        params.search = searchTerm; //
+      }
       if (filters.categoryId) params.categoryId = filters.categoryId;
       if (filters.minPrice) params.minPrice = filters.minPrice;
       if (filters.maxPrice) params.maxPrice = filters.maxPrice;
@@ -80,7 +86,7 @@ const ShopPage = () => {
       top: 0,
       behavior: "smooth", // Tạo hiệu ứng trượt mượt mà thay vì nhảy "bụp" phát lên
     });
-  }, [filters]);
+  }, [filters, searchTerm]);
 
   const handlePageChange = (newPage: number) => {
     setFilters((prev) => ({ ...prev, page: newPage }));

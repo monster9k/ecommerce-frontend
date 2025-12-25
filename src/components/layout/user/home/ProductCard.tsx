@@ -8,30 +8,22 @@ type Product = {
   price: number;
   rating: number;
   img: string;
-  oldPrice?: number | null;
-  badge?: string | null;
 };
 
 const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
   return (
     <div className="bg-white rounded-xl shadow-sm p-4 flex flex-col transform transition-transform duration-300 hover:scale-105 cursor-pointer">
-      <div className="relative">
-        <Link to={`/product/${product.id}`} className="block">
-          <div className="bg-gray-100 rounded-lg p-6 flex items-center justify-center h-48">
+      <Link to={`/shop/${product.id}`} className="relative">
+        <div className="block">
+          <div className="bg-white rounded-lg p-6 flex items-center justify-center h-48">
             <img
               src={product.img}
               alt={product.title}
-              className="max-h-full object-contain"
+              className="max-h-full object-contain !rounded-2xl"
             />
           </div>
-        </Link>
-
-        {product.badge && (
-          <div className="absolute top-3 right-3 bg-pink-100 text-pink-600 text-xs px-2 py-1 rounded-full">
-            {product.badge}
-          </div>
-        )}
-      </div>
+        </div>
+      </Link>
 
       <div className="mt-4 flex-1 flex flex-col">
         <h3
@@ -49,12 +41,12 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
         </div>
 
         <div className="mt-3 flex items-baseline gap-2">
-          <div className="text-lg font-semibold">${product.price}</div>
-          {product.oldPrice && (
-            <div className="text-sm text-gray-400 line-through">
-              ${product.oldPrice}
-            </div>
-          )}
+          <div className="text-lg font-semibold">
+            {Number(product.price).toLocaleString("vi-VN", {
+              style: "currency",
+              currency: "VND",
+            })}
+          </div>
         </div>
       </div>
     </div>

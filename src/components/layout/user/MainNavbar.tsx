@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { AuthContext } from "../../context/auth.context";
 import {
@@ -23,7 +23,7 @@ const MainNavbar: React.FC = () => {
   }
 
   const { auth, setAuth } = context;
-
+  const [searchTerm, setSearchTerm] = useState("");
   console.log("auth", auth);
 
   const handlers: Record<string, () => void> = {
@@ -47,6 +47,21 @@ const MainNavbar: React.FC = () => {
       navigate("/");
     }
   }, [auth.isAuthenticated, navigate, location.pathname]);
+
+  const handleSearch = () => {
+    if (searchTerm.trim()) {
+      // Chuyển hướng sang trang Shop kèm query param ?search=...
+      navigate(`/shop?search=${encodeURIComponent(searchTerm.trim())}`);
+      setSearchTerm(""); // (Tùy chọn) Reset ô input sau khi search
+    }
+  };
+
+  // 4. Hàm xử lý khi nhấn phím Enter
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
+  };
 
   const userMenuItems: MenuProps["items"] = useMemo(() => {
     // menu chung
@@ -151,24 +166,25 @@ const MainNavbar: React.FC = () => {
             >
               Shop
             </Link>
-            <li className="hover:text-black cursor-pointer font-medium">
-              On Sale
-            </li>
+
             <li className="hover:text-black cursor-pointer font-medium">
               New Arrivals
-            </li>
-            <li className="hover:text-black cursor-pointer font-medium">
-              Brands
             </li>
           </ul>
 
           {/* Search */}
           <div className="flex items-center gap-4 flex-1 max-w-md bg-gray-100 rounded-full px-4 py-2">
-            <Search className="w-6 h-6 text-gray-400"></Search>
+            <Search
+              className="w-6 h-6 text-gray-400"
+              onClick={handleSearch}
+            ></Search>
             <input
               type="text"
               placeholder="Search for products..."
               className="w-full bg-transparent outline-none text-sm placeholder:text-gray-400"
+              value={searchTerm || ""}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              onKeyDown={handleKeyDown}
             />
           </div>
         </div>

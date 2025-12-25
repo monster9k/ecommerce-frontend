@@ -1,11 +1,17 @@
 import { Tag } from "lucide-react";
 
-const CartSummary = () => {
-  const subtotal = 565;
-  const discount = 113;
-  const delivery = 15;
+const CartSummary = ({ cartData }: any) => {
+  const subtotal =
+    cartData?.reduce((acc: number, item: any) => {
+      const price = Number(item.productVariant.price);
+      const qty = Number(item.quantity);
+      return acc + price * qty;
+    }, 0) || 0;
+  const discount = subtotal * 0.2; // 20%
+  const delivery = subtotal > 0 ? 30000 : 0; // 30k ship, nếu giỏ rỗng thì 0
   const total = subtotal - discount + delivery;
 
+  // console.log("cartData", cartData);
   return (
     <div className="border !rounded-3xl p-6 h-fit">
       <h2 className="!text-lg !font-semibold mb-4">Order Summary</h2>
@@ -13,24 +19,45 @@ const CartSummary = () => {
       <div className="space-y-3 text-sm">
         <div className="flex justify-between">
           <span className="text-gray-600">Subtotal</span>
-          <span className="font-bold">${subtotal}</span>
+          <span className="font-bold">
+            {Number(subtotal).toLocaleString("vi-VN", {
+              style: "currency",
+              currency: "VND",
+            })}
+          </span>
         </div>
 
         <div className="flex justify-between text-red-500">
           <span className="text-gray-600">Discount (-20%)</span>
-          <span className="font-bold">-${discount}</span>
+          <span className="font-bold">
+            -
+            {Number(discount).toLocaleString("vi-VN", {
+              style: "currency",
+              currency: "VND",
+            })}
+          </span>
         </div>
 
         <div className="flex justify-between">
           <span className="text-gray-600">Delivery Fee</span>
-          <span className="font-bold">${delivery}</span>
+          <span className="font-bold">
+            {Number(delivery).toLocaleString("vi-VN", {
+              style: "currency",
+              currency: "VND",
+            })}
+          </span>
         </div>
 
         <hr />
 
         <div className="flex justify-between  text-base">
           <span>Total</span>
-          <span className="font-bold">${total}</span>
+          <span className="font-bold">
+            {Number(total).toLocaleString("vi-VN", {
+              style: "currency",
+              currency: "VND",
+            })}
+          </span>
         </div>
       </div>
 

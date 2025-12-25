@@ -32,8 +32,8 @@ const CartPage = () => {
         <h1 className="!text-3xl !font-extrabold">YOUR CART</h1>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
-          <CartItems cartData={cartData} />
-          <CartSummary />
+          <CartItems cartData={cartData} refreshCart={fetchCart} />
+          <CartSummary cartData={cartData} />
         </div>
       </main>
 
