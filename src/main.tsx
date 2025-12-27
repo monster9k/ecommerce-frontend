@@ -25,6 +25,7 @@ import CartPage from "./pages/user/CartPage";
 import ProfilePage from "./pages/user/ProfilePage";
 import CheckoutPage from "./pages/user/CheckoutPage";
 import OrderSuccessPage from "./pages/user/OrderSuccessPage";
+import OrderPage from "./pages/user/OrderPage";
 
 const router = createBrowserRouter([
   {
@@ -50,10 +51,13 @@ const router = createBrowserRouter([
         path: "profile",
         element: <ProfilePage />,
       },
-
       {
         path: "checkout",
         element: <CheckoutPage />,
+      },
+      {
+        path: "orders",
+        element: <OrderPage />,
       },
       {
         path: "order-success",

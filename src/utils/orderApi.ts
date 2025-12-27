@@ -12,4 +12,10 @@ const getOrderDBApi = () => {
   return axios.get(URL_API);
 };
 
-export { getOrderDBApi };
+// API Lấy danh sách đơn hàng (MỚI)
+const getMyOrdersApi = () => {
+  const URL_API = "/api/orders";
+  return axios.get(URL_API);
+};
+
+export { getOrderDBApi, getMyOrdersApi };
