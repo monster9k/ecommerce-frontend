@@ -1,4 +1,5 @@
 import { Tag } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const CartSummary = ({ cartData }: any) => {
   const subtotal =
@@ -75,10 +76,11 @@ const CartSummary = ({ cartData }: any) => {
           Apply
         </button>
       </div>
-
-      <button className="w-full bg-black text-white py-3 mt-4 !rounded-4xl transform transition-transform duration-300 hover:scale-105">
-        Go to Checkout →
-      </button>
+      <Link to="/checkout">
+        <button className="w-full bg-black text-white py-3 mt-4 !rounded-4xl transform transition-transform duration-300 hover:scale-105">
+          Go to Checkout →
+        </button>
+      </Link>
     </div>
   );
 };

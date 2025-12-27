@@ -2,6 +2,10 @@ import axios from "./axios.custiomize";
 
 // user api
 
+const getAccountApi = () => {
+  return axios.get("/api/account");
+};
+
 const createUserApi = (username: string, email: string, password: string) => {
   const URL_API = "/api/register";
   const data = {
@@ -49,4 +53,11 @@ const deleteUserApi = (id: Number) => {
   return axios.delete(URL_API);
 };
 
-export { createUserApi, loginUserApi, getUserApi, editUserApi, deleteUserApi };
+export {
+  getAccountApi,
+  createUserApi,
+  loginUserApi,
+  getUserApi,
+  editUserApi,
+  deleteUserApi,
+};
