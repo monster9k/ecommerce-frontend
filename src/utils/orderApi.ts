@@ -18,4 +18,26 @@ const getMyOrdersApi = () => {
   return axios.get(URL_API);
 };
 
+export const getAllOrdersAdminApi = (search: string = "") => {
+  // Nếu có search, gắn vào query param
+  const url = search
+    ? `/api/admin/orders?search=${encodeURIComponent(search)}`
+    : `/api/admin/orders`;
+
+  return axios.get(url);
+};
+
+// [ADMIN] Cập nhật đơn hàng
+export const updateOrderAdminApi = (
+  id: number,
+  data: { status?: string; isPaid?: boolean }
+) => {
+  return axios.put(`/api/admin/orders/${id}`, data);
+};
+
+// [ADMIN] Xóa đơn hàng
+export const deleteOrderAdminApi = (id: number) => {
+  return axios.delete(`/api/admin/orders/${id}`);
+};
+
 export { getOrderDBApi, getMyOrdersApi };

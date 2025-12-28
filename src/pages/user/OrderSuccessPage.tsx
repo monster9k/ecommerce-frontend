@@ -30,7 +30,7 @@ const OrderSuccessPage = () => {
         <div className="space-y-4">
           {/* Nút xem đơn hàng */}
           <button
-            onClick={() => navigate("/")} // Điều hướng về trang lịch sử đơn hàng
+            onClick={() => navigate("/orders")} // Điều hướng về trang lịch sử đơn hàng
             className="w-full bg-black text-white py-4 !rounded-4xl font-bold text-lg 
                        flex items-center justify-center gap-2 transform transition-transform duration-300 hover:scale-105 shadow-xl"
           >
