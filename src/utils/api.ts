@@ -48,6 +48,15 @@ const editUserApi = (
   return axios.put(URL_API, data);
 };
 
+// ham update cho user cho phep doi anh
+const updateUserProfileApi = (id: number, formData: FormData) => {
+  const URL_API = `/api/edit-user/${id}`;
+
+  // Axios tự động nhận biết FormData và set header 'Content-Type': 'multipart/form-data'
+  // nhưng để chắc chắn, ta có thể config thêm header
+  return axios.put(URL_API, formData);
+};
+
 const deleteUserApi = (id: Number) => {
   const URL_API = `/api/delete-user/${id}`;
   return axios.delete(URL_API);
@@ -59,5 +68,6 @@ export {
   loginUserApi,
   getUserApi,
   editUserApi,
+  updateUserProfileApi,
   deleteUserApi,
 };

@@ -20,6 +20,7 @@ const ProfileOrders: React.FC<ProfileOrdersProps> = ({ orders }) => {
       Completed: "bg-green-100 text-green-700 border-green-200",
       Shipping: "bg-blue-100 text-blue-700 border-blue-200",
       Cancelled: "bg-red-50 text-red-600 border-red-100",
+      Processing: "bg-yellow-100 text-yellow-700 border-yellow-200",
     };
     return (
       <span
@@ -53,7 +54,7 @@ const ProfileOrders: React.FC<ProfileOrdersProps> = ({ orders }) => {
                 <Package className="w-6 h-6" />
               </div>
               <div>
-                <h3 className="font-bold text-gray-900">{order.id}</h3>
+                <h3 className="font-bold !text-xl text-gray-900">{order.id}</h3>
                 <div className="flex items-center gap-2 text-sm text-gray-500 mt-1">
                   <Clock className="w-3 h-3" /> {order.date}
                 </div>

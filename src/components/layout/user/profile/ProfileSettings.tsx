@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { User, Mail, Phone, MapPin } from "lucide-react";
 
 interface ProfileSettingsProps {
@@ -8,16 +8,40 @@ interface ProfileSettingsProps {
     phone: string;
     address: string;
   };
+  onSave: (data: FormData) => void;
 }
 
-const ProfileSettings: React.FC<ProfileSettingsProps> = ({ initialData }) => {
+const ProfileSettings: React.FC<ProfileSettingsProps> = ({
+  initialData,
+  onSave,
+}) => {
   const [formData, setFormData] = useState(initialData);
+
+  useEffect(() => {
+    setFormData(initialData);
+  }, [initialData]);
+
+  // 2. Hàm xử lý khi bấm nút Lưu
+  const handleSubmit = () => {
+    const dataToSend = new FormData();
+    // Đóng gói các trường text vào FormData
+    dataToSend.append("username", formData.username);
+    dataToSend.append("email", formData.email);
+    dataToSend.append("phone", formData.phone);
+    dataToSend.append("address", formData.address);
+
+    // Gọi hàm từ cha truyền xuống
+    onSave(dataToSend);
+  };
 
   return (
     <div className="bg-white !rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8 animate-fade-in">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-xl font-bold text-gray-800">Thông tin cá nhân</h2>
-        <button className="px-5 py-2 bg-black text-white text-sm font-medium !rounded-lg hover:bg-gray-800 transition-colors">
+        <button
+          className="px-5 py-2 bg-black text-white text-sm font-medium !rounded-lg hover:bg-gray-800 transition-colors"
+          onClick={handleSubmit}
+        >
           Lưu thay đổi
         </button>
       </div>
