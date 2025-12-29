@@ -87,11 +87,22 @@ const CheckoutPage = () => {
       };
 
       // 3. Gọi API
-      await createOrderApi(payload);
-
+      const res = await createOrderApi(payload);
+      const newOrderId = res.data?.data?.id;
       // 4. Thành công
       message.success("Order placed successfully! 🎉");
-      navigate("/order-success"); // Chuyển trang sau khi đặt hàng
+
+      //ĐIỀU HƯỚNG DỰA TRÊN PAYMENT METHOD
+      if (paymentMethod === "COD") {
+        navigate("/order-success");
+      } else {
+        // Nếu là BANK, chuyển sang trang Payment kèm theo OrderID và Số tiền
+        navigate(`/payment/${newOrderId}`, {
+          state: { total: total },
+        });
+      }
+
+      // Chuyển trang sau khi đặt hàng
     } catch (error: any) {
       console.error(error);
       // Hiển thị lỗi từ backend trả về (ví dụ: hết hàng)
@@ -109,7 +120,7 @@ const CheckoutPage = () => {
       </div>
     );
   }
-
+  // console.log("payment: ", paymentMethod);
   // console.log("cart:", cartItems);
   // console.log("user: ", formData);
   return (
